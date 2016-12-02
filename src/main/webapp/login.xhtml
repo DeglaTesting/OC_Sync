@@ -4,48 +4,68 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
+    <h:head>
 
-    <f:view contentType="text/html">
-        <h:head>
-            <f:facet name="first">
-                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
-                <title>OC_Sync</title>
-            </f:facet>
-        </h:head>
-        <h:body>
-            <p:layout fullPage="true">
-                <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true"/>
-                <p:layoutUnit position="south" size="100" closable="true" collapsible="true">
-                    Footer
-                </p:layoutUnit>
-                <p:layoutUnit position="center">
-                    <h:form>
-                        <p:growl id="growl" showDetail="true" autoUpdate="true" />
-                        <p:panel header="Login" style="width:25%; margin-top: 5%; margin-left:30%">
-                            <h:panelGrid columns="2" style="margin-top:10px;">
-                                <h:outputLabel for="username" value="Username:" style="margin-right: 20px"/>
-                                <p:inputText id="username" value="#{UserLogin.username}" placeholder="name@123" rendered="true"/>
-                                <h:outputLabel for="password" value="Password:" style="margin-right: 20px"/>
-                                <p:password id="password" value="#{UserLogin.password}" placeholder="*******"  rendered="true"/>
-                            </h:panelGrid>
-                            <h:panelGrid columns="2" style="margin-top:50px;">
-                                <h:outputText value="Please choose an OC instance :"/>  
-                                <p:selectOneMenu value="#{OcInstance.instance}" valueChangeListener="#{OcInstance.valueChangeMethod}" onchange="submit()" >
-                                    <f:selectItem itemLabel="Choose One" itemValue=""  />
-                                    <f:selectItem itemLabel="OC_Play" itemValue="OC_Play" />
-                                    <f:selectItem itemLabel="OC_Design" itemValue="OC_Design" />
-                                    <f:selectItem itemLabel="OC_Live" itemValue="OC_Live" />
-                                </p:selectOneMenu>
-                            </h:panelGrid>
-                            <h:panelGrid columns="2" style="margin-top:20px">
-                                <h:outputText style="margin-right:255px"/>  
-                                <p:commandButton value="Login" update="growl" type="submit" actionListener="#{UserLogin.login}" ajax="false"/>
-                            </h:panelGrid>
-                        </p:panel>
-                    </h:form>
-                </p:layoutUnit>
-            </p:layout>
-        </h:body>
+        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+        <title>OC_Sync</title>
+        <style>
+            .ui-layout-north {                    
+                overflow:hidden !important;
+                background-color: #0277BD    !important;
+                
+            }
+            
+             .ui-layout-center {                    
+               overflow: hidden !important;
+               border-width: 0 !important
+                
+            }
+            .ui-layout-south {  
+                overflow:hidden !important;
+                background-color: #0277BD !important;
+            }
+            .ui-layout-north .ui-layout-unit-content {
+                overflow:hidden !important;
+                background-color: #0277BD !important;
+            }    
 
-    </f:view>
+            .ui-layout-south .ui-layout-unit-content {
+                overflow:hidden !important;
+                background-color: #0277BD !important;
+            } 
+        </style>
+
+    </h:head>
+    <h:body>
+        <p:layout fullPage="true">
+            <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true"/>
+            <p:layoutUnit position="south" size="100" closable="true" collapsible="true"/>
+            <p:layoutUnit position="center" >
+                <h:form>
+                    <p:growl id="growl" showDetail="true" autoUpdate="true" />
+                    <p:panel header="Login" style="width:25%; margin-top: 5%; margin-left:30%">
+                        <h:panelGrid columns="2" style="margin-top:10px;">
+                            <h:outputLabel for="username" value="Username:" style="margin-right: 20px"/>
+                            <p:inputText id="username" value="#{UserLogin.username}" placeholder="OCusername" rendered="true"/>
+                            <h:outputLabel for="password" value="Password:" style="margin-right: 20px"/>
+                            <p:password id="password" value="#{UserLogin.password}" placeholder="*******"  rendered="true"/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="2" style="margin-top:50px;">
+                            <h:outputText value="Please choose an OC instance :"/>  
+                            <p:selectOneMenu value="#{OcInstance.instance}" valueChangeListener="#{OcInstance.valueChangeMethod}" onchange="submit()" >
+                                <f:selectItem itemLabel="Choose One" itemValue=""  />
+                                <f:selectItem itemLabel="OC_Play" itemValue="OC_Play" />
+                                <f:selectItem itemLabel="OC_Design" itemValue="OC_Design" />
+                                <f:selectItem itemLabel="OC_Live" itemValue="OC_Live" />
+                            </p:selectOneMenu>
+                        </h:panelGrid>
+                        <h:panelGrid columns="2" style="margin-top:20px">
+                            <h:outputText style="margin-right:255px"/>  
+                            <p:commandButton value="Login" update="growl" type="submit" actionListener="#{UserLogin.login}" ajax="false"/>
+                        </h:panelGrid>
+                    </p:panel>
+                </h:form>
+            </p:layoutUnit>
+        </p:layout>
+    </h:body>
 </html>

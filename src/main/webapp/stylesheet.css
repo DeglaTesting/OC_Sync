@@ -1,0 +1,17 @@
+.ui-layout-north {                    
+    overflow:hidden !important;
+    background-color: #0277BD    !important;
+}
+.ui-layout-south {  
+    overflow:hidden !important;
+    background-color: #03A9F4 !important;
+}
+.ui-layout-north .ui-layout-unit-content {
+    overflow:hidden !important;
+    background-color: #0277BD !important;
+}    
+
+.ui-layout-south .ui-layout-unit-content {
+    overflow:hidden !important;
+    background-color: #03A9F4 !important;
+}   

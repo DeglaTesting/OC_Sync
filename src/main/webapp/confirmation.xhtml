@@ -4,55 +4,80 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
-    <f:view contentType="text/html">
-        <h:head>
-            <f:facet name="first">
-                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
-                <title>OC_Sync</title>
-            </f:facet>
-        </h:head>
-        <h:body>
-            <p:layout fullPage="true">
-                <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">   
-                </p:layoutUnit>
-                <p:layoutUnit position="south" size="100" closable="true" collapsible="true">
-                    Footer
-                </p:layoutUnit>
-                <p:layoutUnit position="center">
-                    <h:form id="fStudy">      
-                        <p:tabView activeIndex="2" style="border:none" >
-                            <p:tab title="Study mapping" disabled="true"/>
-                            <p:tab title="Import Subjects"  disabled="true"/>
-                            <p:tab title="Confirmation"/>
-                        </p:tabView>
-                    </h:form> 
-                    <h:form>
-                        <h4 style="color: #009688; margin-left: 30px;">Congratulation, your data is already uploaded to OpenClinica.</h4>
-                    </h:form>
-                    <h:form style="margin-left: 30px;  margin-bottom:15%">
-                        <h5 style="color: #1565C0; text-decoration: underline">Click on Download, if you want to get the XML file.</h5>
-                        <p:commandButton value="Download" ajax="false"  icon="ui-icon-arrowthick-1-s">
-                            <p:fileDownload value="#{FileDownloadView.prepDownload()}" />
-                        </p:commandButton> 
-                    </h:form> 
-                    <h:form style="margin-left: 30px; margin-bottom:10%">
-                        <p:commandButton value="Home page" ajax="false"  action="studyMapping.xhtml"/>
-                    </h:form> 
-                </p:layoutUnit>
-                <p:layoutUnit position="west" size="175">   
-                    <h:form>
-                        <p:dataTable var="Study" value="#{UserStudyList.getlStudy()}" selectionMode="single" selection="#{UserStudyList.selectedStudy}" disabledSelection="true" rowKey="#{Study.study_name}">
-                            <f:facet name="header">
-                                Select Study
-                            </f:facet>
-                            <p:column>
-                                <h:outputText value="#{Study.study_name}" />
-                            </p:column>
-                        </p:dataTable>
-                    </h:form>
-                </p:layoutUnit>
-            </p:layout>
-        </h:body>
-    </f:view>
+    <h:head>
+        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+        <title>OC_Sync</title>
+        <style>
+            .ui-layout-north {                    
+                overflow:hidden !important;
+            }
+            .ui-layout-center {                    
+                overflow: hidden !important;
+                border-width: 0 !important
+            }
+            .ui-layout-south {  
+                overflow:hidden !important;
+                background-color: #0277BD !important;
+            }
+            .ui-layout-north .ui-layout-unit-content {
+                overflow:hidden !important;
+            }    
+
+            .ui-layout-south .ui-layout-unit-content {
+                overflow:hidden !important;
+                background-color: #0277BD !important;
+            } 
+        </style>
+    </h:head>
+    <h:body>
+        <p:layout fullPage="true">
+            <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true"> 
+                <h:form>
+                    <p:menubar>
+                        <p:submenu label="Welcome #{Logged.userName}"/>
+                        <f:facet name="options">
+                            <p:commandButton type="submit" value="Logout" icon="ui-icon-extlink" action="#{UserLogin.logout()}"/>
+                        </f:facet>
+                    </p:menubar>
+                </h:form>
+            </p:layoutUnit>
+            <p:layoutUnit position="south" size="100" closable="true" collapsible="true">
+                Footer
+            </p:layoutUnit>
+            <p:layoutUnit position="center">
+                <h:form id="fStudy">      
+                    <p:tabView activeIndex="2" style="border:none" >
+                        <p:tab title="Study mapping" disabled="true"/>
+                        <p:tab title="Import Subjects"  disabled="true"/>
+                        <p:tab title="Confirmation"/>
+                    </p:tabView>
+                </h:form> 
+                <h:form>
+                    <h4 style="color: #009688; margin-left: 30px;">Congratulation, your data is already uploaded to OpenClinica.</h4>
+                </h:form>
+                <h:form style="margin-left: 30px;  margin-bottom:15%">
+                    <h5 style="color: #1565C0; text-decoration: underline">Click on Download, if you want to get the XML file.</h5>
+                    <p:commandButton value="Download" ajax="false"  icon="ui-icon-arrowthick-1-s">
+                        <p:fileDownload value="#{FileDownloadView.prepDownload()}" />
+                    </p:commandButton> 
+                </h:form> 
+                <h:form style="margin-left: 30px; margin-bottom:10%">
+                    <p:commandButton value="Home page" ajax="false"  action="studyMapping.xhtml"/>
+                </h:form> 
+            </p:layoutUnit>
+            <p:layoutUnit position="west" size="175">   
+                <h:form>
+                    <p:dataTable var="Study" value="#{UserStudyList.getlStudy()}" selectionMode="single" selection="#{UserStudyList.selectedStudy}" disabledSelection="true" rowKey="#{Study.study_name}">
+                        <f:facet name="header">
+                            Select Study
+                        </f:facet>
+                        <p:column>
+                            <h:outputText value="#{Study.study_name}" />
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </p:layoutUnit>
+        </p:layout>
+    </h:body>
 </html>
 

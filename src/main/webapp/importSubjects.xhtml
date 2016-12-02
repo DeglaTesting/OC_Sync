@@ -4,20 +4,44 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
-
     <h:head>
-        <f:facet name="first">
-            <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
-            <title>OC_Sync</title>
-        </f:facet>
+        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+        <title>OC_Sync</title>
+        <style>
+            .ui-layout-north {                    
+                overflow:hidden !important;
+            }
+            .ui-layout-center {                    
+                overflow: hidden !important;
+                border-width: 0 !important
+            }
+            .ui-layout-south {  
+                overflow:hidden !important;
+                background-color: #0277BD !important;
+            }
+            .ui-layout-north .ui-layout-unit-content {
+                overflow:hidden !important;
+            }    
+
+            .ui-layout-south .ui-layout-unit-content {
+                overflow:hidden !important;
+                background-color: #0277BD !important;
+            } 
+        </style>
     </h:head>
     <h:body>
         <p:layout fullPage="true">
-            <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">   
+            <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">  
+                <h:form>
+                    <p:menubar>
+                        <p:submenu label="Welcome #{Logged.userName}"/>
+                        <f:facet name="options">
+                            <p:commandButton type="submit" value="Logout" icon="ui-icon-extlink" action="#{UserLogin.logout()}"/>
+                        </f:facet>
+                    </p:menubar>
+                </h:form>
             </p:layoutUnit>
-            <p:layoutUnit position="south" size="100" closable="true" collapsible="true">
-                Footer
-            </p:layoutUnit>
+            <p:layoutUnit position="south" size="100" closable="true" collapsible="true"/>
             <p:layoutUnit position="center">
                 <h:form id="fStudy">      
                     <p:tabView activeIndex="1" style="border:none" >

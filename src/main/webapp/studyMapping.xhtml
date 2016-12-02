@@ -4,68 +4,81 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+        <title>OC_Sync</title>
+        <style>
+            .ui-layout-north {                    
+                overflow:hidden !important;
+            }
+            .ui-layout-center {                    
+                overflow: hidden !important;
+                border-width: 0 !important
+            }
+            .ui-layout-south {  
+                overflow:hidden !important;
+                background-color: #0277BD !important;
+            }
+            .ui-layout-north .ui-layout-unit-content {
+                overflow:hidden !important;
+            }    
 
-    <f:view contentType="text/html">
-        <h:head>
-            <f:facet name="first">
-                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
-                <title>OC_Sync</title>
-            </f:facet>
-        </h:head>
-        <h:body>
-            <p:layout fullPage="true">
-                <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true"> 
-                    <h:form>
-                        <p:menubar>
-                            <p:submenu label="Welcome #{Logged.userName}"/>
-                            <f:facet name="options">
-                                <p:commandButton type="submit" value="Logout" icon="ui-icon-extlink" action="#{UserLogin.logout()}"/>
-                            </f:facet>
-                        </p:menubar>
-                    </h:form>
-                </p:layoutUnit>
-                <p:layoutUnit position="south" size="100" closable="true" collapsible="true">
-                    Footer
-                </p:layoutUnit>
-                <p:layoutUnit position="center">
-                    <p:tabView activeIndex="0" style="border:none" >
-                        <p:tab title="Study mapping"/>
-                        <p:tab title="Import Subjects"  disabled="true" />
-                        <p:tab title="Confirmation"  disabled="true"/>
-                    </p:tabView>
+            .ui-layout-south .ui-layout-unit-content {
+                overflow:hidden !important;
+                background-color: #0277BD !important;
+            } 
+        </style>
+    </h:head>
+    <h:body>
+        <p:layout fullPage="true">
+            <p:layoutUnit position="north" size="70"> 
+                <h:form>
+                    <p:menubar>
+                        <p:submenu label="Welcome #{Logged.userName}"/>
+                        <f:facet name="options">
+                            <p:commandButton type="submit" value="Logout" icon="ui-icon-extlink" action="#{UserLogin.logout()}"/>
+                        </f:facet>
+                    </p:menubar>
+                </h:form>
+            </p:layoutUnit>
+            <p:layoutUnit position="south" size="100" closable="true" collapsible="true"/>
+            <p:layoutUnit position="center">
+                <p:tabView activeIndex="0" style="border:none" >
+                    <p:tab title="Study mapping"/>
+                    <p:tab title="Import Subjects"  disabled="true" />
+                    <p:tab title="Confirmation"  disabled="true"/>
+                </p:tabView>
 
-                    <h:form enctype="multipart/form-data">
-                        <h3 style="color: #1565C0; margin-left: 30px; margin-top: 50px; text-decoration: underline">Please upload your source study:</h3>
-                        <p:fileUpload id="fileupload" fileUploadListener="#{FileUpload.uploadSourceFile}"  multiple="false" fileLimit="1" allowTypes="/(\.|\/)(xml)$/" 
-                                      disabled="#{UserStudyList.disableFileUploadButton}" widgetVar="fileupload" update="@widgetVar(map) @widgetVar(studyDataTable)" style="margin: 20px"/>  
-                        <p:messages style=" margin-left: 30px" autoUpdate="true" showDetail="true" for="fileuploadMSG"/>
-                    </h:form>
-                    
-                    <h:form id="from2">
-                        <p:commandButton type="submit"  style=" margin: 40px" value="Reset" icon="ui-icon-arrowrefresh-1-w" update="@widgetVar(fileupload) @widgetVar(studyDataTable)" 
-                                         actionListener="#{FileUpload.setDisableMapButton(true)}" action="#{UserClick.setFormLodder('Reset')}" ajax="false"/> 
-                        <p:commandButton type="submit" style=" margin: 20px" value="Map" icon="ui-icon-circle-triangle-e" disabled="#{FileUpload.disableMapButton}"
-                                         actionListener="#{Mapper.mapping()}" ajax="false" widgetVar="map" update="ui" /> 
-                    </h:form>
-                    <ui:include src="#{UserClick.getFormLodder()}" id="ui" /> 
-                </p:layoutUnit>
+                <h:form enctype="multipart/form-data">
+                    <h3 style="color: #1565C0; margin-left: 30px; margin-top: 50px; text-decoration: underline">Please upload your source study:</h3>
+                    <p:fileUpload id="fileupload" fileUploadListener="#{FileUpload.uploadSourceFile}"  multiple="false" fileLimit="1" allowTypes="/(\.|\/)(xml)$/" 
+                                  disabled="#{UserStudyList.disableFileUploadButton}" widgetVar="fileupload" update="@widgetVar(map) @widgetVar(studyDataTable)" style="margin: 20px"/>  
+                    <p:messages style=" margin-left: 30px" autoUpdate="true" showDetail="true" for="fileuploadMSG"/>
+                </h:form>
 
-                <p:layoutUnit position="west" size="175">   
-                    <h:form>
-                        <p:growl id="msgs" showDetail="true"   autoUpdate="true" for="SelectStudyMSG"/>         
-                        <p:dataTable widgetVar="studyDataTable" var="Study" value="#{UserStudyList.getlStudy()}" selection="#{UserStudyList.selectedStudy}"
-                                     disabledSelection="#{FileUpload.disableSelectStudyButton}" selectionMode="single" rowKey="#{Study.study_name}">
-                            <f:facet name="header">
-                                Select Study
-                            </f:facet>
-                            <p:ajax event="rowSelect" listener="#{UserStudyList.onRowSelect}" update="@widgetVar(fileupload)"/>
-                            <p:column>
-                                <h:outputText value="#{Study.study_name}" />
-                            </p:column>
-                        </p:dataTable>
-                    </h:form>
-                </p:layoutUnit>
-            </p:layout>
-        </h:body>
-    </f:view>
+                <h:form id="from2">
+                    <p:commandButton type="submit"  style=" margin: 40px" value="Reset" icon="ui-icon-arrowrefresh-1-w" update="@widgetVar(fileupload) @widgetVar(studyDataTable)" 
+                                     actionListener="#{FileUpload.setDisableMapButton(true)}" action="#{UserClick.setFormLodder('Reset')}" ajax="false"/> 
+                    <p:commandButton type="submit" style=" margin: 20px" value="Map" icon="ui-icon-circle-triangle-e" disabled="#{FileUpload.disableMapButton}"
+                                     actionListener="#{Mapper.mapping()}" ajax="false" widgetVar="map" update="ui" /> 
+                </h:form>
+                <ui:include src="#{UserClick.getFormLodder()}" id="ui" /> 
+            </p:layoutUnit>
+            <p:layoutUnit position="west" size="175">   
+                <h:form>
+                    <p:growl id="msgs" showDetail="true"   autoUpdate="true" for="SelectStudyMSG"/>         
+                    <p:dataTable widgetVar="studyDataTable" var="Study" value="#{UserStudyList.getlStudy()}" selection="#{UserStudyList.selectedStudy}"
+                                 disabledSelection="#{FileUpload.disableSelectStudyButton}" selectionMode="single" rowKey="#{Study.study_name}">
+                        <f:facet name="header">
+                            Select Study
+                        </f:facet>
+                        <p:ajax event="rowSelect" listener="#{UserStudyList.onRowSelect}" update="@widgetVar(fileupload)"/>
+                        <p:column>
+                            <h:outputText value="#{Study.study_name}" />
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </p:layoutUnit>
+        </p:layout>
+    </h:body>
 </html>
