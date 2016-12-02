@@ -33,7 +33,7 @@
 
     <h3  style="color: #B71C1C; margin-left: 30px; margin-top: 50px; text-decoration: underline;"> These fields are absent in the target study:</h3>
     <h:form style="margin: 5%">
-        <p:dataTable style="width: 75%" var="MissingStructure" value="#{MissingStructureView.getlMissingStructure()}" scrollable="false"  emptyMessage="The items of the two studies match perfectly. "
+        <p:dataTable style="width: 75%" var="MissingStructure" value="#{MissingStructureView.getlMissingStructure()}" scrollable="false"  emptyMessage=""
                      rowStyleClass="#{MissingStructure.missingFieldType == 'Study' ? 'red' : 'old'}">
             <f:facet name="header">
                 Inexistant fields

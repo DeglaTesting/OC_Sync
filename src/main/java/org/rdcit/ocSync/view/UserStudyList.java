@@ -6,7 +6,6 @@
 package org.rdcit.ocSync.view;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -23,28 +22,27 @@ import org.rdcit.ocSync.model.Study;
  */
 @ManagedBean(name = "UserStudyList")
 @ViewScoped
-public class UserStudyList implements Serializable{
-    
-   private List<Study> lStudy;
-   public Study selectedStudy;
-   
-   @PostConstruct
-   public void init(){
-       lStudy = new ArrayList();
-       Study s1 = new Study("study3");
-       Study s2 = new Study("study2");
-       Study s3 = new Study("study3");
-       lStudy.add(s3);
-       lStudy.add(s2);
-       lStudy.add(s1);
-       
-   }
+public class UserStudyList implements Serializable {
+
+    private List<Study> lStudy;
+    public Study selectedStudy;
+    boolean disableFileUploadButton = true;
+
+    @PostConstruct
+    public void init() {
+        lStudy = (List<Study>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("studyUserList");
+        if ((Study) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("SelectedStudy") != null) {
+            setSelectedStudy((Study) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("SelectedStudy"));
+        }
+
+    }
 
     public UserStudyList() {
     }
 
     public List<Study> getlStudy() {
         return lStudy;
+
     }
 
     public void setlStudy(List<Study> lStudy) {
@@ -62,15 +60,21 @@ public class UserStudyList implements Serializable{
     public void onRowSelect(SelectEvent event) {
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Target study", selectedStudy.getStudy_name());
         FacesContext.getCurrentInstance().addMessage("SelectStudyMSG", msg);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("SelectedStudy", selectedStudy);
+        setDisableFileUploadButton(false);
     }
- 
+
     public void onRowUnselect(UnselectEvent event) {
-        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Target study", selectedStudy.getStudy_name());
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Target study", "You have to choose a target study first");
         FacesContext.getCurrentInstance().addMessage(null, msg);
+        // setDisableFileUploadButton(true);
     }
-    
-    
-    
-   
-    
+
+    public boolean isDisableFileUploadButton() {
+        return disableFileUploadButton;
+    }
+
+    public void setDisableFileUploadButton(boolean disableFileUploadButton) {
+        this.disableFileUploadButton = disableFileUploadButton;
+    }
 }

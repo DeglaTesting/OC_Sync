@@ -10,6 +10,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -24,12 +25,13 @@ import org.rdcit.ocSync.model.UploadedFile;
  */
 @ManagedBean(name = "FileUpload")
 @ViewScoped
-public class FileUpload {
+public class FileUpload implements Serializable{
 
     public String sourcefilePath;
     private final String destination = "C:\\Users\\sa841\\Documents\\";
     String uploadedFileName; 
     boolean disableMapButton = true;
+    boolean disableSelectStudyButton = false;
 
     public void uploadSourceFile(FileUploadEvent event) {
         try {
@@ -40,6 +42,7 @@ public class FileUpload {
             FacesContext.getCurrentInstance().addMessage("fileuploadMSG", message);
             uploadedFileName = event.getFile().getFileName();
             setDisableMapButton(false);
+            setDisableSelectStudyButton(true);
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -80,6 +83,15 @@ public class FileUpload {
 
     public void setDisableMapButton(boolean disableMapButton) {
         this.disableMapButton = disableMapButton;
+        setDisableSelectStudyButton(false);
+    }
+
+    public boolean isDisableSelectStudyButton() {
+        return disableSelectStudyButton;
+    }
+
+    public void setDisableSelectStudyButton(boolean disableSelectStudyButton) {
+        this.disableSelectStudyButton = disableSelectStudyButton;
     }
 
      

@@ -6,6 +6,7 @@
 package org.rdcit.ocSync.ocws;
 
 import java.io.IOException;
+import javax.faces.context.FacesContext;
 import javax.xml.namespace.QName;
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.MimeHeaders;
@@ -18,6 +19,7 @@ import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPHeader;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.soap.SOAPPart;
+import org.rdcit.ocSync.model.User;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -46,6 +48,7 @@ public class IsStudySubject_ws {
     public SOAPMessage createSOAPRequest() {
         SOAPMessage soapResponse = null;
         try {
+             User user = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
             MessageFactory messageFactory = MessageFactory.newInstance();
             SOAPMessage soapMessage = messageFactory.createMessage();
             SOAPPart soapPart = soapMessage.getSOAPPart();
@@ -64,10 +67,10 @@ public class IsStudySubject_ws {
             usernameToken.addAttribute(new QName("xmlns:wsu"), "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd");
             usernameToken.addAttribute(new QName("wsu:Id"), "UsernameToken-27777511");
             SOAPElement username = usernameToken.addChildElement("Username", "wsse");
-            username.addTextNode("sa841");
+            username.addTextNode(user.getUser_name());
             SOAPElement password = usernameToken.addChildElement("Password", "wsse");
             password.setAttribute("Type", "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText");
-            password.addTextNode("32f4a48056b62a73fad8482a3fa502fc35b96701");
+            password.addTextNode(user.getPassword());
             SOAPElement isStudySubjectRequest = body.addChildElement("isStudySubjectRequest", "v1");
             SOAPElement studySubject = isStudySubjectRequest.addChildElement("studySubject", "v1");
             SOAPElement label = studySubject.addChildElement("label", "bean");

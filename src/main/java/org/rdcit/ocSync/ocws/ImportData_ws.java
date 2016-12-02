@@ -11,6 +11,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.context.FacesContext;
 import javax.xml.namespace.QName;
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.MimeHeaders;
@@ -24,8 +25,8 @@ import javax.xml.soap.SOAPHeader;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.soap.SOAPPart;
 import org.rdcit.ocSync.map.ToDocument;
+import org.rdcit.ocSync.model.User;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  *
@@ -33,8 +34,6 @@ import org.w3c.dom.Element;
  */
 public class ImportData_ws {
 
-    // @ManagedProperty( value= "#{{CompatibleODMXmlFileGenerateur}")
-    //CompatibleODMXmlFileGenerateur CompatibleODMXmlFileGenerateur;
     File file;
     Document doc;
 
@@ -65,6 +64,7 @@ public class ImportData_ws {
 
         SOAPMessage soapResponse = null;
         try {
+            User user = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
             MessageFactory messageFactory = MessageFactory.newInstance();
             SOAPMessage soapMessage = messageFactory.createMessage();
             SOAPPart soapPart = soapMessage.getSOAPPart();
@@ -83,10 +83,10 @@ public class ImportData_ws {
             usernameToken.addAttribute(new QName("xmlns:wsu"), "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd");
             usernameToken.addAttribute(new QName("wsu:Id"), "UsernameToken-27777511");
             SOAPElement username = usernameToken.addChildElement("Username", "wsse");
-            username.addTextNode("sa841");
+            username.addTextNode(user.getUser_name());
             SOAPElement password = usernameToken.addChildElement("Password", "wsse");
             password.setAttribute("Type", "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText");
-            password.addTextNode("32f4a48056b62a73fad8482a3fa502fc35b96701");
+            password.addTextNode(user.getPassword());
             SOAPElement importRequest = body.addChildElement("importRequest", "v1");
             SOAPElement odm = importRequest.addChildElement("odm");
            // SOAPElement ODM = odm.addChildElement("ODM");

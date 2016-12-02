@@ -41,13 +41,12 @@
                 </p:layoutUnit>
                 <p:layoutUnit position="west" size="175">   
                     <h:form>
-                        <p:growl id="msgs" showDetail="true" widgetVar="ss"  autoUpdate="true"/>
-                        <p:dataTable var="Study" value="#{UserStudyList.getlStudy()}" >
+                        <p:dataTable var="Study" value="#{UserStudyList.getlStudy()}" selectionMode="single" selection="#{UserStudyList.selectedStudy}" disabledSelection="true" rowKey="#{Study.study_name}">
                             <f:facet name="header">
                                 Select Study
                             </f:facet>
                             <p:column>
-                                <h:outputText value="#{Study.study_oid}" />
+                                <h:outputText value="#{Study.study_name}" />
                             </p:column>
                         </p:dataTable>
                     </h:form>

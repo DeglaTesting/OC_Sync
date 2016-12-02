@@ -10,6 +10,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import org.rdcit.ocSync.model.Study;
 import org.rdcit.ocSync.model.Subject;
 import org.rdcit.ocSync.ocOdm.CollectingClinicalData;
@@ -61,4 +62,8 @@ public class StudySubjectView implements Serializable {
         this.disableConfirmButton = disableConfirmButton;
     }
 
+    public String getSelectedStudyName() {
+        Study selectedStudy = (Study) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("SelectedStudy");
+        return selectedStudy.getStudy_name();
+    }
 }

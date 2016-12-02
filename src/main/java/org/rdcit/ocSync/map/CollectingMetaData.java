@@ -28,6 +28,10 @@ public class CollectingMetaData {
         this.file = file;
     }
     
+     public CollectingMetaData() {
+       
+    }
+    
     public Document openFile() {
         Document doc = null;
         try {
@@ -41,8 +45,19 @@ public class CollectingMetaData {
         return doc;
     }
 
-    public List<Study> collectingMetaData() {
+    public List<Study> collectingMetaDataFromFile() {
         Document doc = openFile();
+        CollectingStudies CollectingStudies = new CollectingStudies();
+        List<Study> lStudy = CollectingStudies.collectingStudies(doc);
+        if (lStudy.size() > 1) {
+            collectingSitesMetaData(doc, lStudy);
+        } else {
+            collectingStudyMetaData(doc, lStudy);
+        }
+        return lStudy;
+    }
+    
+     public List<Study> collectingMetaDataFromDoc(Document doc) {
         CollectingStudies CollectingStudies = new CollectingStudies();
         List<Study> lStudy = CollectingStudies.collectingStudies(doc);
         if (lStudy.size() > 1) {
@@ -94,7 +109,7 @@ public class CollectingMetaData {
     public static void main(String[] args) {
          File inputFile = new File("C:\\Users\\sa841\\Documents\\odmwithmultiplesites.xml");
         CollectingMetaData collectingMetaData = new CollectingMetaData(inputFile);
-        collectingMetaData.collectingMetaData();
+        collectingMetaData.collectingMetaDataFromFile();
     }
 
 }

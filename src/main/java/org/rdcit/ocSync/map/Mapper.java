@@ -8,11 +8,15 @@ package org.rdcit.ocSync.map;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 import org.rdcit.ocSync.controller.UserClick;
 import org.rdcit.ocSync.model.*;
+import org.rdcit.ocSync.ocws.StudyMetaData_ws;
+import org.w3c.dom.Document;
 
 /**
  *
@@ -39,19 +43,26 @@ public class Mapper {
     List<OIDMapper> lOIDMapper;
 
     public void preMapping() {
-        CollectingMetaData collectingSourceMetaData = new CollectingMetaData(sourceFile);
-        lSourceStudy = collectingSourceMetaData.collectingMetaData();
-        CollectingMetaData collectingTargetMetaData = new CollectingMetaData(targetFile);
-        lTargetStudy = collectingTargetMetaData.collectingMetaData();
-        lStructure = new ArrayList();
-        lEmptyStructure = new ArrayList();
-        lMissingStructure = new ArrayList();
-        lImproperMissingStructure = new ArrayList();
-        lImproperEmptyStructure = new ArrayList();
-        lOIDMapper = new ArrayList();
-        lStructure1 = new ArrayList();
-        areTheyMatch = false;
-        resMapping = new Object[5];
+        try {
+            CollectingMetaData collectingSourceMetaData = new CollectingMetaData(sourceFile);
+            lSourceStudy = collectingSourceMetaData.collectingMetaDataFromFile();
+            Study SelectedStudy = (Study) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("SelectedStudy");
+            StudyMetaData_ws studyMetaData_ws = new StudyMetaData_ws();
+            Document selectedStudyDoc = studyMetaData_ws.createSOAPRequest(SelectedStudy.getStudy_u_p_id());
+            CollectingMetaData collectingTargetMetaData = new CollectingMetaData();
+            lTargetStudy = collectingTargetMetaData.collectingMetaDataFromDoc(selectedStudyDoc);
+            lStructure = new ArrayList();
+            lEmptyStructure = new ArrayList();
+            lMissingStructure = new ArrayList();
+            lImproperMissingStructure = new ArrayList();
+            lImproperEmptyStructure = new ArrayList();
+            lOIDMapper = new ArrayList();
+            lStructure1 = new ArrayList();
+            areTheyMatch = false;
+            resMapping = new Object[5];
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     public List<Structure> getlStructure() {
@@ -94,11 +105,6 @@ public class Mapper {
                                                                 if (lSourceItem.get(q).getItemName().equals(lTargetItem.get(r).getItemName())) {
                                                                     Structure structure = new Structure(lSourceStudy.get(i).getStudy_name(), lSourceStudyEvent.get(k).getEventName(), lSourceStudyEventFrom.get(m).getFormName(), lSourceItem.get(q).getItemName());
                                                                     lStructure.add(structure);
-                                                                    // OIDMapper oidMapper = new OIDMapper();
-                                                                    //  oidMapper.setSourcesOIDs(lSourceStudy.get(i).getStudy_oid(), lSourceStudyEvent.get(k).getEventOID(), lSourceStudyEventFrom.get(m).getFormOID(), lSourceItemGroup.get(o).getItemGroupOID(), lSourceItem.get(q).getItemOID());
-                                                                    //  oidMapper.setTargetOIDs(lTargetStudy.get(j).getStudy_oid(), lTargetStudyEvent.get(l).getEventOID(), lTargetStudyEventFrom.get(n).getFormOID(), lTargetItemGroup.get(p).getItemGroupOID(), lTargetItem.get(r).getItemOID());
-// OdmXmlParams odmXmlParams = new OdmXmlParams(lTargetStudy.get(j).getStudy_oid(), lTargetStudyEvent.get(l).getEventOID(), lTargetStudyEventFrom.get(n).getFormOID(), lTargetItemGroup.get(p).getItemGroupOID(), lTargetItem.get(r).getItemOID());
-                                                                    //lOdmXmlParams.add(odmXmlParams);
                                                                     nItemChecked++;
                                                                     break;
                                                                 } else if (r == lTargetItem.size() - 1) {

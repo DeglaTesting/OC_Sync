@@ -18,7 +18,7 @@ import javax.faces.context.FacesContext;
 @ManagedBean(name = "ConfFileReader")
 public class ConfFileReader {
 
-    private final String confFile = "C:\\Users\\sa841\\Documents\\NetBeansProjects\\OC_Sync_V03\\connect.conf";
+    private final String confFile = "C:\\Users\\sa841\\Documents\\NetBeansProjects\\OC\\connect.conf";
     String ocInstance;
     String sOcInstanceDBconf;
     String[] ocInstanceDBconf;

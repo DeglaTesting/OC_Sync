@@ -41,20 +41,19 @@
                     </p:dataTable>
                 </h:form> 
                 <h:form style="margin-left: 30px; margin-top:60px">
-                     <p:commandButton value="Go back" style="margin-right: 30px;"  ajax="false" action="index.xhtml"/>
-                    <p:commandButton value="Confirm" disabled="#{StudyView.disableConfirmButton}" ajax="false" action="#{CompatibleODMXmlFileGenerateur.generateOdmXmlFile()}"/>
-                  
+                    <p:commandButton value="Go back" style="margin-right: 30px;"  ajax="false" action="index.xhtml"/>
+                    <p:commandButton value="Confirm" disabled="#{StudyView.disableConfirmButton}" ajax="false" action="#{CompatibleODMXmlFileGenerateur.generateOdmXmlFile()}"/>          
                 </h:form> 
             </p:layoutUnit>
             <p:layoutUnit position="west" size="175">   
                 <h:form>
-                    <p:growl id="msgs" showDetail="true" widgetVar="ss"  autoUpdate="true"/>
-                    <p:dataTable var="Study" value="#{UserStudyList.getlStudy()}">
+                    <p:dataTable var="Study" value="#{UserStudyList.getlStudy()}" lazy="true" selection="#{UserStudyList.selectedStudy}" disabledSelection="true"
+                                 selectionMode="single" rowKey="#{Study.study_name}">
                         <f:facet name="header">
                             Select Study
                         </f:facet>
                         <p:column>
-                            <h:outputText value="#{Study.study_oid}" />
+                            <h:outputText value="#{Study.study_name}" />
                         </p:column>
                     </p:dataTable>
                 </h:form>

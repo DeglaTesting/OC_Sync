@@ -35,6 +35,7 @@ public class ListStudies_ws {
     }
 
     private SOAPMessage createSOAPRequest() throws Exception {
+         User user = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
         MessageFactory messageFactory = MessageFactory.newInstance();
         SOAPMessage soapMessage = messageFactory.createMessage();
         SOAPPart soapPart = soapMessage.getSOAPPart();
