@@ -14,7 +14,15 @@
         </h:head>
         <h:body>
             <p:layout fullPage="true">
-                <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">   
+                <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true"> 
+                    <h:form>
+                        <p:menubar>
+                            <p:submenu label="Welcome #{Logged.userName}"/>
+                            <f:facet name="options">
+                                <p:commandButton type="submit" value="Logout" icon="ui-icon-extlink" action="#{UserLogin.logout()}"/>
+                            </f:facet>
+                        </p:menubar>
+                    </h:form>
                 </p:layoutUnit>
                 <p:layoutUnit position="south" size="100" closable="true" collapsible="true">
                     Footer
@@ -51,7 +59,6 @@
                                 Select Study
                             </f:facet>
                             <p:ajax event="rowSelect" listener="#{UserStudyList.onRowSelect}" update="@widgetVar(fileupload)"/>
-                            <p:ajax event="rowUnselect" listener="#{UserStudyList.onRowUnselect}" />
                             <p:column>
                                 <h:outputText value="#{Study.study_name}" />
                             </p:column>
