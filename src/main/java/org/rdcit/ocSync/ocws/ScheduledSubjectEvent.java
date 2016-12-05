@@ -13,12 +13,12 @@ import org.rdcit.ocSync.controller.Connect;
  *
  * @author sa841
  */
-public class ScheduledTargetSubjectEvent {
+public class ScheduledSubjectEvent {
 
     String eventOID;
     String subjectID;
 
-    public ScheduledTargetSubjectEvent(String eventOID, String subjectID) {
+    public ScheduledSubjectEvent(String eventOID, String subjectID) {
         this.eventOID = eventOID;
         this.subjectID = subjectID;
     }
