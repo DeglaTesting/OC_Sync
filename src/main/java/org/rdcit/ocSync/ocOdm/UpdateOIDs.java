@@ -38,21 +38,21 @@ public class UpdateOIDs {
             {
                 List<Subject> lSubject = lSourceDataStudy.get(i).getlSubject();
                 for (int j = 0; j < lSubject.size(); j++) {
-                    IsStudySubject_ws isStudySubject_ws = new IsStudySubject_ws(getTargetStudyPUID(lSourceDataStudy.get(i).getStudy_oid()), lSubject.get(j).getSubjectId());
+                    IsStudySubject_ws isStudySubject_ws = new IsStudySubject_ws(getTargetStudyPUID(lSourceDataStudy.get(i).getStudyOID()), lSubject.get(j).getSubjectId());
                     SOAPMessage sp = isStudySubject_ws.createSOAPRequest();
                     if (isStudySubject_ws.isStudySubjectExist(sp)) {
                         lSubject.get(j).setSubjectOID(isStudySubject_ws.getStudySubjectOID(sp));
                     } else {
-                        CreateStudySubject createStudySubject = new CreateStudySubject(getTargetStudyPUID(lSourceDataStudy.get(i).getStudy_oid()), lSubject.get(j).getSubjectId(), lSubject.get(j).getSubjectGendre(), lSubject.get(j).getSubjectDateOfBirth());
+                        CreateStudySubject createStudySubject = new CreateStudySubject(getTargetStudyPUID(lSourceDataStudy.get(i).getStudyOID()), lSubject.get(j).getSubjectId(), lSubject.get(j).getSubjectGendre(), lSubject.get(j).getSubjectDateOfBirth());
                         createStudySubject.createSOAPRequest();
-                        IsStudySubject_ws isStudySubject_ws2 = new IsStudySubject_ws(getTargetStudyPUID(lSourceDataStudy.get(i).getStudy_oid()), lSubject.get(j).getSubjectId());
+                        IsStudySubject_ws isStudySubject_ws2 = new IsStudySubject_ws(getTargetStudyPUID(lSourceDataStudy.get(i).getStudyOID()), lSubject.get(j).getSubjectId());
                         SOAPMessage sp2 = isStudySubject_ws2.createSOAPRequest();
                         lSubject.get(j).setSubjectOID(isStudySubject_ws.getStudySubjectOID(sp2));
                     }
                     List<StudyEvent> lSubjectStudyEvent = lSubject.get(j).getlSubjectstudyEvent();
                     for (int k = 0; k < lSubjectStudyEvent.size(); k++) {
-                        String eventOID = getTargetStudyEventOID(lSubjectStudyEvent.get(k).getEventName(), lSourceDataStudy.get(i).getStudy_oid());
-                        ScheduleSubjectEvent_ws scheduleSubjectevent_ws = new ScheduleSubjectEvent_ws(lSubject.get(j).getSubjectId(), getTargetStudyPUID(lSourceDataStudy.get(i).getStudy_oid()), eventOID);
+                        String eventOID = getTargetStudyEventOID(lSubjectStudyEvent.get(k).getEventName(), lSourceDataStudy.get(i).getStudyOID());
+                        ScheduleSubjectEvent_ws scheduleSubjectevent_ws = new ScheduleSubjectEvent_ws(lSubject.get(j).getSubjectId(), getTargetStudyPUID(lSourceDataStudy.get(i).getStudyOID()), eventOID);
                         scheduleSubjectevent_ws.createSOAPRequest();
                     }
                 }
@@ -65,8 +65,8 @@ public class UpdateOIDs {
             for (int i = 0; i < this.lOIDMapper.size(); i++) {
                 Study sourceStudy = this.lSourceDataStudy.get(r);
                 Study targetStudy = this.lOIDMapper.get(i).getSourceStudy();
-                if (sourceStudy.getStudy_oid().equals(targetStudy.getStudy_oid())) {
-                    sourceStudy.setStudy_name(targetStudy.getStudy_name());
+                if (sourceStudy.getStudyOID().equals(targetStudy.getStudyOID())) {
+                    sourceStudy.setStudyName(targetStudy.getStudyName());
                     List<Subject> lSubject = sourceStudy.getlSubject();
                     for (int s = 0; s < lSubject.size(); s++) {
 
@@ -117,8 +117,8 @@ public class UpdateOIDs {
             for (int i = 0; i < this.lOIDMapper.size(); i++) {
                 Study sourceStudy = this.lSourceDataStudy.get(r);
                 Study targetStudy = this.lOIDMapper.get(i).getTargetStudy();
-                if (sourceStudy.getStudy_name().equals(targetStudy.getStudy_name())) {
-                    sourceStudy.setStudy_oid(targetStudy.getStudy_oid());
+                if (sourceStudy.getStudyName().equals(targetStudy.getStudyName())) {
+                    sourceStudy.setStudyOID(targetStudy.getStudyOID());
                     List<Subject> lSubject = sourceStudy.getlSubject();
                     for (int s = 0; s < lSubject.size(); s++) {
                         List<StudyEvent> lSourceStudyEvent = lSubject.get(s).getlSubjectstudyEvent();
@@ -166,8 +166,8 @@ public class UpdateOIDs {
     public String getTargetStudyPUID(String sourceStudyOID) {
         String sStudyPUID = "";
         for (int i = 0; i < lOIDMapper.size(); i++) {
-            if (lOIDMapper.get(i).getSourceStudy().getStudy_oid().equals(sourceStudyOID)) {
-                sStudyPUID = lOIDMapper.get(i).getTargetStudy().getStudy_u_p_id();
+            if (lOIDMapper.get(i).getSourceStudy().getStudyOID().equals(sourceStudyOID)) {
+                sStudyPUID = lOIDMapper.get(i).getTargetStudy().getStudyUPID();
                 break;
             }
         }
@@ -177,7 +177,7 @@ public class UpdateOIDs {
     public String getTargetStudyEventOID(String sourceStudyEventName, String sourceStudyOID) {
         String sTargetStudyEventOID = "";
         for (int i = 0; i < lOIDMapper.size(); i++) {
-            if (lOIDMapper.get(i).getSourceStudy().getStudy_oid().equals(sourceStudyOID)) {
+            if (lOIDMapper.get(i).getSourceStudy().getStudyOID().equals(sourceStudyOID)) {
                 List<StudyEvent> lTargetStudyEvent = lOIDMapper.get(i).getTargetStudy().getlStudyEvent();
                 for (int j = 0; j < lTargetStudyEvent.size(); j++) {
                     if (lTargetStudyEvent.get(j).getEventName().equals(sourceStudyEventName)) {

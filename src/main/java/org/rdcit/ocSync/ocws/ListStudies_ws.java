@@ -84,13 +84,13 @@ public class ListStudies_ws {
                     Node nIdentifier = nlStudy.item(j);
                     switch (nIdentifier.getNodeName()) {
                         case "identifier":
-                            study.setStudy_u_p_id(nIdentifier.getTextContent());
+                            study.setStudyUPID(nIdentifier.getTextContent());
                             break;
                         case "oid":
-                            study.setStudy_oid(nIdentifier.getTextContent());
+                            study.setStudyOID(nIdentifier.getTextContent());
                             break;
                         case "name":
-                            study.setStudy_name(nIdentifier.getTextContent());
+                            study.setStudyName(nIdentifier.getTextContent());
                             break;
                         default:
                             break;

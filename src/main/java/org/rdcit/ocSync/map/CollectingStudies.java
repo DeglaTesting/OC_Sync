@@ -30,11 +30,12 @@ public class CollectingStudies {
                 NodeList nlStudyChildren = nStudy.getChildNodes();
                 for (int j = 0; j < nlStudyChildren.getLength(); j++) {
                     if (nlStudyChildren.item(j).getNodeName().equals("GlobalVariables")) {
-                        study.setStudy_name(getStudyName(nlStudyChildren.item(j)));
-                        study.setStudy_u_p_id(getStudyProtocolName(nlStudyChildren.item(j)));
+                        study.setStudyName(getStudyName(nlStudyChildren.item(j)));
+                        study.setStudyUPID(getStudyProtocolName(nlStudyChildren.item(j)));
                         break;
                     }
                 }
+                study.setStudyParams(getStudyParams(nStudy));
                 lStudy.add(study);
             }
         }
@@ -65,5 +66,28 @@ public class CollectingStudies {
             studyName = eStudyProtocolName.getTextContent();
         }
         return studyName;
+    }
+
+    public String[] getStudyParams(Node nStudy) {
+        String[] studyParams = new String[3];
+        ToDocument toDocument = new ToDocument();
+        Document document = toDocument.nodeToDocument(nStudy);
+        NodeList nlStudyParamListRef = document.getElementsByTagName("OpenClinica:StudyParameterListRef");
+        for (int i = 0; i < nlStudyParamListRef.getLength(); i++) {
+            Node nStudyParamListRef = nlStudyParamListRef.item(i);
+            if ((nStudyParamListRef.getNodeType() == Node.ELEMENT_NODE)) {      
+                Element eStudyParamListRef = (Element) nStudyParamListRef;
+                if (eStudyParamListRef.getAttribute("StudyParameterListID").equals("SPL_collectDob")) {
+                    studyParams[0] = eStudyParamListRef.getAttribute("Value");
+                }
+                if (eStudyParamListRef.getAttribute("StudyParameterListID").equals("SPL_subjectPersonIdRequired")) {
+                    studyParams[1] = eStudyParamListRef.getAttribute("Value");
+                }
+                if (eStudyParamListRef.getAttribute("StudyParameterListID").equals("SPL_genderRequired")) {
+                    studyParams[2] = eStudyParamListRef.getAttribute("Value");
+                }
+            }
+        }
+        return studyParams;
     }
 }

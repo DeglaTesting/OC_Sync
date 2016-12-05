@@ -39,9 +39,9 @@ public class ImportData_ws {
 
     public ImportData_ws(Document doc) {
         this.doc = doc;
-            }
+    }
 
-    public String fileToString() {
+  /*  public String fileToString() {
         String content = "";
         try {
             FileReader fr = new FileReader(this.file);
@@ -54,11 +54,11 @@ public class ImportData_ws {
             content = sb.toString();
             System.out.println(content);
         } catch (IOException ex) {
-            Logger.getLogger(ImportData_ws.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
         }
         
         return content; 
-    }
+    }*/
 
     public SOAPMessage createSOAPRequest() {
 
@@ -93,6 +93,7 @@ public class ImportData_ws {
             ToDocument toDocument= new ToDocument();
             //System.out.println(toDocument.toString(this.doc));
             String content = toDocument.toString(this.doc).replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "");
+            
             odm.addTextNode(content);
             System.out.println("Elementbody added");
             MimeHeaders headers = soapMessage.getMimeHeaders();

@@ -67,12 +67,12 @@
             </p:layoutUnit>
             <p:layoutUnit position="west" size="175">   
                 <h:form>
-                    <p:dataTable var="Study" value="#{UserStudyList.getlStudy()}" selectionMode="single" selection="#{UserStudyList.selectedStudy}" disabledSelection="true" rowKey="#{Study.study_name}">
+                    <p:dataTable var="Study" value="#{UserStudyList.getlStudy()}" selectionMode="single" selection="#{UserStudyList.selectedStudy}" disabledSelection="true" rowKey="#{Study.studyName}">
                         <f:facet name="header">
                             Select Study
                         </f:facet>
                         <p:column>
-                            <h:outputText value="#{Study.study_name}" />
+                            <h:outputText value="#{Study.studyName}" />
                         </p:column>
                     </p:dataTable>
                 </h:form>

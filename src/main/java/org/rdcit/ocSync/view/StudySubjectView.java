@@ -33,7 +33,6 @@ public class StudySubjectView implements Serializable {
     public void init() {
         CollectingClinicalData collectingClinicalData = new CollectingClinicalData();
         lStudy = collectingClinicalData.collectingClinicalData();
-        System.out.println("@@@@@@@@@@@@@@@ lStudy Subject " + lStudy.size());
         boolean disabled = false;
         for (int i = 0; i < lStudy.size(); i++) {
             if (lStudy.get(i).getlSubject().isEmpty()) {
@@ -64,6 +63,6 @@ public class StudySubjectView implements Serializable {
 
     public String getSelectedStudyName() {
         Study selectedStudy = (Study) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("SelectedStudy");
-        return selectedStudy.getStudy_name();
+        return selectedStudy.getStudyName();
     }
 }

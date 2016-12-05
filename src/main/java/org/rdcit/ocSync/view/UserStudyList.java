@@ -58,7 +58,7 @@ public class UserStudyList implements Serializable {
     }
 
     public void onRowSelect(SelectEvent event) {
-        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Target study", selectedStudy.getStudy_name());
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Target study", selectedStudy.getStudyName());
         FacesContext.getCurrentInstance().addMessage("SelectStudyMSG", msg);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("SelectedStudy", selectedStudy);
         setDisableFileUploadButton(false);

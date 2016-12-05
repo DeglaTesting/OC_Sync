@@ -71,7 +71,7 @@ public class CollectingStudyEvents {
             Node nStudy = nlStudy.item(i);
             if ((nStudy.getNodeType() == Node.ELEMENT_NODE)) {
                 Element eStudy = (Element) nStudy;
-                if (eStudy.getAttribute("OID").equals(this.study.getStudy_oid())) {
+                if (eStudy.getAttribute("OID").equals(this.study.getStudyOID())) {
                     ToDocument toDocument = new ToDocument();
                     studyDoc = toDocument.nodeToDocument(nStudy);
                 }

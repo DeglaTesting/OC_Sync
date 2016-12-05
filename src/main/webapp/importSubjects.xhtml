@@ -53,7 +53,7 @@
                 <h:form>      
                     <p:dataTable  style=" width: 60%; margin-left: 30px; margin-top: 50px;"  var="Study" value="#{StudyView.getlStudy()}" scrollable="false"  emptyMessage="there is no clinical data in this study. ">
                         <p:column headerText="study OID">
-                            <h:outputText value="#{Study.study_oid}" />
+                            <h:outputText value="#{Study.studyOID}" />
                         </p:column>
                         <p:column headerText="Subject unique protocol ID">
                             <p:dataTable  style="border: none;" id="dSubject" var="Subject" value="#{Study.getlSubject()}" scrollable="false"  emptyMessage="There no subjects to import in this study. ">
@@ -72,12 +72,12 @@
             <p:layoutUnit position="west" size="175">   
                 <h:form>
                     <p:dataTable var="Study" value="#{UserStudyList.getlStudy()}" lazy="true" selection="#{UserStudyList.selectedStudy}" disabledSelection="true"
-                                 selectionMode="single" rowKey="#{Study.study_name}">
+                                 selectionMode="single" rowKey="#{Study.studyName}">
                         <f:facet name="header">
                             Select Study
                         </f:facet>
                         <p:column>
-                            <h:outputText value="#{Study.study_name}" />
+                            <h:outputText value="#{Study.studyName}" />
                         </p:column>
                     </p:dataTable>
                 </h:form>

@@ -26,7 +26,8 @@
             .ui-layout-south .ui-layout-unit-content {
                 overflow:hidden !important;
                 background-color: #0277BD !important;
-            } 
+            }   
+            .img-button-help { background-image: url('checked.png') !important; }
         </style>
     </h:head>
     <h:body>
@@ -54,6 +55,7 @@
                     <p:fileUpload id="fileupload" fileUploadListener="#{FileUpload.uploadSourceFile}"  multiple="false" fileLimit="1" allowTypes="/(\.|\/)(xml)$/" 
                                   disabled="#{UserStudyList.disableFileUploadButton}" widgetVar="fileupload" update="@widgetVar(map) @widgetVar(studyDataTable)" style="margin: 20px"/>  
                     <p:messages style=" margin-left: 30px" autoUpdate="true" showDetail="true" for="fileuploadMSG"/>
+                     <p:messages style=" margin-left: 30px" autoUpdate="true" showDetail="true" for="formatErrorMSG"/>
                 </h:form>
 
                 <h:form id="from2">
@@ -68,13 +70,13 @@
                 <h:form>
                     <p:growl id="msgs" showDetail="true"   autoUpdate="true" for="SelectStudyMSG"/>         
                     <p:dataTable widgetVar="studyDataTable" var="Study" value="#{UserStudyList.getlStudy()}" selection="#{UserStudyList.selectedStudy}"
-                                 disabledSelection="#{FileUpload.disableSelectStudyButton}" selectionMode="single" rowKey="#{Study.study_name}">
+                                 disabledSelection="#{FileUpload.disableSelectStudyButton}" selectionMode="single" rowKey="#{Study.studyName}">
                         <f:facet name="header">
                             Select Study
                         </f:facet>
                         <p:ajax event="rowSelect" listener="#{UserStudyList.onRowSelect}" update="@widgetVar(fileupload)"/>
                         <p:column>
-                            <h:outputText value="#{Study.study_name}" />
+                            <h:outputText value="#{Study.studyName}" />
                         </p:column>
                     </p:dataTable>
                 </h:form>

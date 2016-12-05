@@ -39,7 +39,7 @@ public class CollectingSubjectClinicalData {
             Node nClinicalData = nlClinicalData.item(m);
             if (nClinicalData.getNodeType() == Node.ELEMENT_NODE) {
                 Element eClinicalData = (Element) nClinicalData;
-                if (eClinicalData.getAttribute("StudyOID").equals(this.study.getStudy_oid())) {
+                if (eClinicalData.getAttribute("StudyOID").equals(this.study.getStudyOID())) {
                     NodeList nlSubjectData = nClinicalData.getChildNodes();
                     for (int n = 0; n < nlSubjectData.getLength(); n++) {
                         Node nSubjectData = nlSubjectData.item(n);

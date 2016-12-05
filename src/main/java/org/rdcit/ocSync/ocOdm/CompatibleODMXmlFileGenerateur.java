@@ -86,7 +86,7 @@ public class CompatibleODMXmlFileGenerateur {
             doc.appendChild(rootElement);
             for (int i = 0; i < this.lStudy.size(); i++) {
                 Element clinicalData = doc.createElement("ClinicalData");
-                clinicalData.setAttribute("StudyOID", lStudy.get(i).getStudy_oid());
+                clinicalData.setAttribute("StudyOID", lStudy.get(i).getStudyOID());
                 List<Subject> lSubject = lStudy.get(i).getlSubject();
                 for (int h = 0; h < lSubject.size(); h++) {
                     Element subjectData = doc.createElement("SubjectData");
