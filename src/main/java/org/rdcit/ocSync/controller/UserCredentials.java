@@ -52,7 +52,7 @@ public class UserCredentials {
                     FacesContext.getCurrentInstance().addMessage(null, message);
                 }
             }
-
+          connect.closeConnection();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }

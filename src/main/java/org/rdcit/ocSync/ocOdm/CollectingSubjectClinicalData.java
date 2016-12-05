@@ -7,13 +7,7 @@ package org.rdcit.ocSync.ocOdm;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.faces.context.FacesContext;
-import org.rdcit.ocSync.model.Item;
-import org.rdcit.ocSync.model.ItemGroup;
-import org.rdcit.ocSync.model.Study;
-import org.rdcit.ocSync.model.StudyEvent;
-import org.rdcit.ocSync.model.StudyEventForm;
-import org.rdcit.ocSync.model.Subject;
+import org.rdcit.ocSync.model.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

@@ -38,21 +38,21 @@ public class UpdateOIDs {
             {
                 List<Subject> lSubject = lSourceDataStudy.get(i).getlSubject();
                 for (int j = 0; j < lSubject.size(); j++) {
-                    IsStudySubject_ws isStudySubject_ws = new IsStudySubject_ws(getTargetStudyPUID(lSourceDataStudy.get(i).getStudyOID()), lSubject.get(j).getSubjectId());
+                    IsStudySubject_ws isStudySubject_ws = new IsStudySubject_ws(getTargetStudyPUID(lSourceDataStudy.get(i).getStudyOID()), lSubject.get(j).getSubjectID());
                     SOAPMessage sp = isStudySubject_ws.createSOAPRequest();
                     if (isStudySubject_ws.isStudySubjectExist(sp)) {
                         lSubject.get(j).setSubjectOID(isStudySubject_ws.getStudySubjectOID(sp));
                     } else {
-                        CreateStudySubject createStudySubject = new CreateStudySubject(getTargetStudyPUID(lSourceDataStudy.get(i).getStudyOID()), lSubject.get(j).getSubjectId(), lSubject.get(j).getSubjectGendre(), lSubject.get(j).getSubjectDateOfBirth());
+                        CreateStudySubject createStudySubject = new CreateStudySubject(getTargetStudyPUID(lSourceDataStudy.get(i).getStudyOID()), lSubject.get(j).getSubjectID(), lSubject.get(j).getSubjectGendre(), lSubject.get(j).getSubjectDateOfBirth());
                         createStudySubject.createSOAPRequest();
-                        IsStudySubject_ws isStudySubject_ws2 = new IsStudySubject_ws(getTargetStudyPUID(lSourceDataStudy.get(i).getStudyOID()), lSubject.get(j).getSubjectId());
+                        IsStudySubject_ws isStudySubject_ws2 = new IsStudySubject_ws(getTargetStudyPUID(lSourceDataStudy.get(i).getStudyOID()), lSubject.get(j).getSubjectID());
                         SOAPMessage sp2 = isStudySubject_ws2.createSOAPRequest();
                         lSubject.get(j).setSubjectOID(isStudySubject_ws.getStudySubjectOID(sp2));
                     }
                     List<StudyEvent> lSubjectStudyEvent = lSubject.get(j).getlSubjectstudyEvent();
                     for (int k = 0; k < lSubjectStudyEvent.size(); k++) {
                         String eventOID = getTargetStudyEventOID(lSubjectStudyEvent.get(k).getEventName(), lSourceDataStudy.get(i).getStudyOID());
-                        ScheduleSubjectEvent_ws scheduleSubjectevent_ws = new ScheduleSubjectEvent_ws(lSubject.get(j).getSubjectId(), getTargetStudyPUID(lSourceDataStudy.get(i).getStudyOID()), eventOID);
+                        ScheduleSubjectEvent_ws scheduleSubjectevent_ws = new ScheduleSubjectEvent_ws(lSubject.get(j).getSubjectID(), getTargetStudyPUID(lSourceDataStudy.get(i).getStudyOID()), eventOID);
                         scheduleSubjectevent_ws.createSOAPRequest();
                     }
                 }

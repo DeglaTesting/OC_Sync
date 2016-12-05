@@ -16,40 +16,38 @@ import javax.faces.bean.ManagedBean;
 @ManagedBean( name = "Subject")
 public class Subject {
 
-    String subjectId;
-    String subjectUd;
+    String subjectID;
+    String subjectUID;
     String subjectOID;
     String subjectGendre;
     String subjectDateOfBirth;
     List<StudyEvent> lSubjectstudyEvent;
-
+    
     public Subject() {
     }
-    
-    
-
+   
     public Subject(String subjectid, String subjectUD, String subjectGendre, String subjectDateOfBirth) {
-        this.subjectId = subjectid;
-        this.subjectUd = subjectUD;
+        this.subjectID = subjectid;
+        this.subjectUID = subjectUD;
         this.subjectGendre = subjectGendre;
         this.subjectDateOfBirth = subjectDateOfBirth;
         lSubjectstudyEvent = new ArrayList();
     }
 
-    public String getSubjectId() {
-        return subjectId;
+    public String getSubjectID() {
+        return subjectID;
     }
 
-    public void setSubjectId(String subjectId) {
-        this.subjectId = subjectId;
+    public void setSubjectID(String subjectID) {
+        this.subjectID = subjectID;
     }
 
-    public String getSubjectUd() {
-        return subjectUd;
+    public String getSubjectUID() {
+        return subjectUID;
     }
 
-    public void setSubjectUd(String subjectUd) {
-        this.subjectUd = subjectUd;
+    public void setSubjectUID(String subjectUID) {
+        this.subjectUID = subjectUID;
     }
 
     public String getSubjectGendre() {
@@ -81,11 +79,9 @@ public class Subject {
         this.lSubjectstudyEvent = lSubjectstudyEvent;
     }
 
-    
-    
 /*    @Override
     public String toString() {
-        return "Subject{" + "subjectId=" + subjectId + ", subjectUd=" + subjectUd + ", subjectGendre=" + subjectGendre + ", subjectDateOfBirth=" + subjectDateOfBirth + ", lSubjectstudyEvent=" + lSubjectstudyEvent.size() + '}';
+        return "Subject{" + "subjectID=" + subjectID + ", subjectUID=" + subjectUID + ", subjectGendre=" + subjectGendre + ", subjectDateOfBirth=" + subjectDateOfBirth + ", lSubjectstudyEvent=" + lSubjectstudyEvent.size() + '}';
     }
 */
 

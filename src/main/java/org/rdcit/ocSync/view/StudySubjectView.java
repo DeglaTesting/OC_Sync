@@ -38,7 +38,7 @@ public class StudySubjectView implements Serializable {
             if (lStudy.get(i).getlSubject().isEmpty()) {
                 disabled = true;
                 Subject subject = new Subject();
-                subject.setSubjectId("This study does not contains any clinical data subject.");
+                subject.setSubjectID("This study does not contains any clinical data subject.");
                 lStudy.get(i).addSubject(subject);
             }
         }
