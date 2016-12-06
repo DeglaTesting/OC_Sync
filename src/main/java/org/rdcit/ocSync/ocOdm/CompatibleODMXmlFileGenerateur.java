@@ -9,6 +9,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -18,7 +19,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.rdcit.ocSync.model.*;
-import org.rdcit.ocSync.ocws.ImportData_ws;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -30,18 +30,21 @@ import org.w3c.dom.Element;
 public class CompatibleODMXmlFileGenerateur {
 
     public List<Study> lStudy;
-     File file;
-     
+    File file;
+     List<LogStructure> lOcWsResponse;
 
     public CompatibleODMXmlFileGenerateur() {
         lStudy = new ArrayList();
-        file = new File("C:\\Users\\sa841\\Documents\\NetBeansProjects\\OC\\test.xml");
+        file = new File("C:\\Users\\sa841\\Documents\\NetBeansProjects\\OC\\StudyOCSync.xml");
     }
 
     public String generateOdmXmlFile() {
         UpdateOIDs updateOIDs = new UpdateOIDs();
         CompatibleODMXmlFileGenerateur compatibleODMXmlFileGenerateur = new CompatibleODMXmlFileGenerateur();
         compatibleODMXmlFileGenerateur.lStudy = updateOIDs.updatelSourceDataStudy();
+        lOcWsResponse = updateOIDs.getlOcWsResponse();
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@ lOcWsResponse SIZE" + lOcWsResponse.size());
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("lOcWsResponse", lOcWsResponse);
         compatibleODMXmlFileGenerateur.writeTheOdmXmlFile();
         return "confirmation.xhtml";
     }
@@ -53,21 +56,9 @@ public class CompatibleODMXmlFileGenerateur {
     public void setFile(File file) {
         this.file = file;
     }
-   
-    /* public static void main(String[] args) {
-        //   CollectingClinicalData collectingClinicalData = new CollectingClinicalData();
-        // collectingClinicalData.collectingClinicalData();
-        UpdateOIDs updateOIDs = new UpdateOIDs();
-        updateOIDs.updatelSourceDataStudy();
-        CompatibleODMXmlFileGenerateur compatibleODMXmlFileGenerateur = new CompatibleODMXmlFileGenerateur();
-        compatibleODMXmlFileGenerateur.lStudy = (List<Study>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("lStudySourceClinicalData");
-        //  compatibleODMXmlFileGenerateur.lStudy = collectingClinicalData.getlStudy();
-        System.out.println("@@@@@@@@@@@@@@@@ " + compatibleODMXmlFileGenerateur.lStudy.size());
-        compatibleODMXmlFileGenerateur.writeTheOdmXmlFile();
-    }*/
+ 
     public File writeTheOdmXmlFile() {
-       // File file = new File("C:\\Users\\sa841\\Documents\\NetBeansProjects\\OC\\test.xml");
-
+      
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -119,13 +110,12 @@ public class CompatibleODMXmlFileGenerateur {
                         }
                         subjectData.appendChild(studyEventData);
                     }
-
                     clinicalData.appendChild(subjectData);
                 }
                 rootElement.appendChild(clinicalData);
             }
-            ImportData_ws importData_ws = new ImportData_ws(doc);
-            importData_ws.createSOAPRequest();
+          /* ImportData_ws importData_ws = new ImportData_ws(doc);
+           importData_ws.createSOAPRequest();*/
             // write the content into xml file
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
@@ -141,4 +131,12 @@ public class CompatibleODMXmlFileGenerateur {
         }
         return file;
     }
+
+    public List<LogStructure> getlOcWsResponse() {
+        return lOcWsResponse;
+    }
+
+    public void setlOcWsResponse(List<LogStructure> lOcWsResponse) {
+        this.lOcWsResponse = lOcWsResponse;
+    } 
 }

@@ -23,6 +23,7 @@ public class Study implements Serializable {
     String[] studyParams; //studyParams[0]=value(SPL_collectDob); studyParams[1]= value(SubjectPersonIdRequired); studyParams[2]=value(SPL_genderRequired)
     List<StudyEvent> lStudyEvent;
     List<Subject> lSubject;
+    String aptToUpload = "check";
 
     public Study() {
     }
@@ -96,6 +97,23 @@ public class Study implements Serializable {
     public void setStudyParams(String[] studyParams) {
         this.studyParams = studyParams;
     }
+
+    
+    public boolean studyParamsEquals(String[] studyParams) {
+        return this.studyParams[0].equals(studyParams[0])
+                && (this.studyParams[1].equals(studyParams[1]))
+                && (this.studyParams[2].equals(studyParams[2]));
+    }
+
+    public String getAptToUpload() {
+        return aptToUpload;
+    }
+
+    public void setAptToUpload(String aptToUpload) {
+        this.aptToUpload = aptToUpload;
+    }
+    
+    
 
     @Override
     public String toString() {

@@ -29,7 +29,7 @@ public class ImportSubjectView implements Serializable {
     }
 
     public String redirectTo() {
-        String toPage = "error.xhtml";
+        String toPage = "login.xhtml";
         lMissingStructure = (List<MissingStructure>) mapper.mapping()[3];
         if (lMissingStructure.size() < 1) {
             toPage = "importSubjects.xhtml";

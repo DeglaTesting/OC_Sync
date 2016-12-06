@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+        <title>OC_Sync</title>
+        <style>
+            .ui-layout-north {                    
+                overflow:hidden !important;
+            }
+            .ui-layout-center {                    
+                overflow: hidden !important;
+                border-width: 0 !important
+            }
+            .ui-layout-south {  
+                overflow:hidden !important;
+                background-color: #0277BD !important;
+            }
+            .ui-layout-north .ui-layout-unit-content {
+                overflow:hidden !important;
+            }    
+
+            .ui-layout-south .ui-layout-unit-content {
+                overflow:hidden !important;
+                background-color: #0277BD !important;
+            } 
+
+
+        </style>
+    </h:head>
+    <h:body>
+        <p:layout fullPage="true">
+            <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">  
+                <h:form>
+                    <p:menubar>
+                        <p:submenu label="Welcome #{Logged.userName}"/>
+                        <f:facet name="options">
+                            <p:commandButton type="submit" value="Logout" icon="ui-icon-extlink" action="#{UserLogin.logout()}"/>
+                        </f:facet>
+                    </p:menubar>
+                </h:form>
+            </p:layoutUnit>
+            <p:layoutUnit position="south" size="100" closable="true" collapsible="true">
+               
+            </p:layoutUnit>
+            <p:layoutUnit position="center">
+                <h:form id="fStudy">      
+                    <p:tabView activeIndex="1" style="border:none" >
+                        <p:tab title="Study mapping" disabled="true"/>
+                        <p:tab title="Import Subjects"/>
+                        <p:tab title="Confirmation"  disabled="true"/>
+                    </p:tabView>
+                </h:form> 
+                <h:form>      
+                    <p:dataTable  style=" width: 60%; margin-left: 30px; margin-top: 50px;"  var="Study" value="#{StudyView.getlStudy()}" scrollable="false"  emptyMessage="there is no clinical data in this study. ">
+                        <p:column headerText="Study OID" style="width:30%">
+                            <h:outputText value="#{Study.studyOID}" />
+                        </p:column>
+                        <p:column headerText="Study's subjects">
+                            <p:dataTable  style="border: none;" id="dSubject" var="Subject" value="#{Study.getlSubject()}" scrollable="false"  emptyMessage="There no subjects to import in this study. ">
+                                <p:column headerText="Subject ID">
+                                    <h:outputText value="#{Subject.subjectID}"/>
+                                </p:column>
+                                <p:column headerText="Subject's studyEvent">
+                                    <p:dataTable  style="border: none; display: list-item !important"  var="StudyEvent" value="#{Subject.getlSubjectstudyEvent()}" scrollable="false"  emptyMessage="No Scheduled event for this subject. ">
+                                        <p:column headerText="StudyEvent name" style="border: none !important">
+                                            <h:outputText value="#{StudyEvent.eventName}"/>
+                                        </p:column>
+                                        <p:column style="width:15%">
+                                            <p:graphicImage name="cc.png"/> 
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:column>
+                            </p:dataTable>
+                        </p:column>
+                    </p:dataTable>
+                </h:form> 
+                <h:form style="margin-left: 30px; margin-top:60px">
+                    <p:commandButton value="Go back" style="margin-right: 30px;"  ajax="false" action="studyMapping.xhtml"/>
+                    <p:commandButton value="Confirm" disabled="#{StudyView.disableConfirmButton}" ajax="false" action="#{CompatibleODMXmlFileGenerateur.generateOdmXmlFile()}"/>          
+                </h:form>
+            </p:layoutUnit>
+            <p:layoutUnit position="west" size="175">   
+                <h:form>
+                    <p:dataTable var="Study" value="#{UserStudyList.getlStudy()}" lazy="true" selection="#{UserStudyList.selectedStudy}" disabledSelection="true"
+                                 selectionMode="single" rowKey="#{Study.studyName}">
+                        <f:facet name="header">
+                            Select Study
+                        </f:facet>
+                        <p:column>
+                            <h:outputText value="#{Study.studyName}" />
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </p:layoutUnit>
+        </p:layout>
+    </h:body>
+</html>

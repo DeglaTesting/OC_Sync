@@ -22,6 +22,7 @@ import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPHeader;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.soap.SOAPPart;
+import org.rdcit.ocSync.model.LogStructure;
 import org.rdcit.ocSync.model.User;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -30,7 +31,7 @@ import org.w3c.dom.NodeList;
  *
  * @author sa841
  */
-public class CreateStudySubject {
+public class CreateStudySubject_ws {
 
     String studyPUID;
     String sitePUID;
@@ -38,8 +39,10 @@ public class CreateStudySubject {
     String subjectGendre;
     String subjectDateOfBirth;
     String enrollmentDate;
+    String message = "";
+    LogStructure logStructure;
 
-    public CreateStudySubject(String studyPUID, String subjectID, String subjectGendre, String subjectDateOfBirth) {
+    public CreateStudySubject_ws(String studyPUID, String subjectID, String subjectGendre, String subjectDateOfBirth) {
         this.studyPUID = studyPUID;
         this.subjectID = subjectID;
         this.subjectGendre = subjectGendre;
@@ -51,7 +54,7 @@ public class CreateStudySubject {
 
     }
 
-    public CreateStudySubject(String studyPUID, String sitePUID, String subjectID, String subjectGendre, String subjectDateOfBirth) {
+    public CreateStudySubject_ws(String studyPUID, String sitePUID, String subjectID, String subjectGendre, String subjectDateOfBirth) {
         this.studyPUID = studyPUID;
         this.sitePUID = sitePUID;
         this.subjectID = subjectID;
@@ -117,16 +120,37 @@ public class CreateStudySubject {
             SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
             SOAPConnection soapConnection = soapConnectionFactory.createConnection();
             soapResponse = soapConnection.call(soapMessage, serverURI);
-              System.out.println("################# CRETE NEW SUBJECT RESPONSE ################################################");
-            System.out.print("Request SOAP Message = ");
-              System.out.print("Request SOAP Message = ");
-           soapResponse.writeTo(System.out);
-            System.out.println();
-               System.out.println("################# CRETE NEW SUBJECT RESPONSE ################################################");
-        } catch (SOAPException | IOException ex) {
+            setLogStructure(soapResponse);
+            //  soapResponse.writeTo(System.out);
+        } catch (SOAPException ex) {
             System.out.println(ex.getMessage());
         }
         return soapResponse;
+    }
+
+    public LogStructure getLogStructure() {
+        return logStructure;
+    }
+
+    public void setLogStructure(LogStructure logStructure) {
+        this.logStructure = logStructure;
+    }
+
+    public void setLogStructure(SOAPMessage soapResponse) {
+        try {
+            NodeList nlODM = soapResponse.getSOAPBody().getElementsByTagName("createResponse");
+            Node nResult = nlODM.item(0);
+            String sResult = nResult.getTextContent();
+            if (sResult.equals("Success")) {
+                this.logStructure = new LogStructure("Success", "The subject: " + this.subjectID + " is created successfully into: " + this.studyPUID);
+            } else {
+                Node nError = soapResponse.getSOAPBody().getElementsByTagName("error").item(0);
+                this.logStructure = new LogStructure("Error", nError.getTextContent());
+            }
+        } catch (SOAPException ex) {
+            System.out.println(ex.getMessage());
+        }
+
     }
 
     /* public boolean isStudySubjectCreated(SOAPMessage soapResponse) {
@@ -145,7 +169,7 @@ public class CreateStudySubject {
         return exist;
     }*/
     public static void main(String[] args) throws Exception {
-        CreateStudySubject createStudySubject = new CreateStudySubject("testingStudy", "subjectID7", "m", "2000-12-12");
+        CreateStudySubject_ws createStudySubject = new CreateStudySubject_ws("testingStudy", "subjectID7", "m", "2000-12-12");
         //    System.out.println(createStudySubject.isStudySubjectCreated(createStudySubject.createSOAPRequest()));
     }
 

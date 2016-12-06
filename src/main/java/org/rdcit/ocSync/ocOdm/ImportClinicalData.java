@@ -7,62 +7,47 @@ package org.rdcit.ocSync.ocOdm;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 import javax.xml.soap.SOAPMessage;
-import org.rdcit.ocSync.model.*;
-import org.rdcit.ocSync.ocws.*;
+import org.rdcit.ocSync.model.Item;
+import org.rdcit.ocSync.model.ItemGroup;
+import org.rdcit.ocSync.model.LogStructure;
+import org.rdcit.ocSync.model.OIDMapper;
+import org.rdcit.ocSync.model.Study;
+import org.rdcit.ocSync.model.StudyEvent;
+import org.rdcit.ocSync.model.StudyEventForm;
+import org.rdcit.ocSync.model.Subject;
+import org.rdcit.ocSync.ocws.CreateStudySubject_ws;
+import org.rdcit.ocSync.ocws.IsStudySubject_ws;
+import org.rdcit.ocSync.ocws.ScheduleSubjectEvent_ws;
+import org.rdcit.ocSync.ocws.ScheduledSubjectEvent;
 
 /**
  *
  * @author sa841
  */
-public class UpdateOIDs {
+public class ImportClinicalData {
 
     List<OIDMapper> lOIDMapper;
     List<LogStructure> lOcWsResponse;
+    @ManagedProperty(value = "#{SourceStudySubjectView.getlStudy()}")
     List<Study> lSourceDataStudy;
 
-    public UpdateOIDs() {
-        CollectingClinicalData collectingClinicalData = new CollectingClinicalData();
-        lSourceDataStudy = collectingClinicalData.collectingClinicalData();
-        lOIDMapper = (List<OIDMapper>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("OIDMapperList");
+    public ImportClinicalData() {
+        this.lOIDMapper = (List<OIDMapper>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("OIDMapperList");
         lOcWsResponse = new ArrayList();
     }
 
-    public List<Study> updatelSourceDataStudy() {
-        // preUpdate();
-        updateClinicalData();
-        setNamesSourceStudyClinicalData();
-        updateStudyOIDs();
-        return this.lSourceDataStudy;
+    public List<Study> getlSourceDataStudy() {
+        return lSourceDataStudy;
     }
 
-    /*public void preUpdate() {
-        for (int i = 0; i < lSourceDataStudy.size(); i++) {
-            List<Subject> lSubject = lSourceDataStudy.get(i).getlSubject();
-            for (int j = 0; j < lSubject.size(); j++) {
-                IsStudySubject_ws isStudySubject_ws = new IsStudySubject_ws(getTargetStudyPUID(lSourceDataStudy.get(i).getStudyOID()), lSubject.get(j).getSubjectID());
-                SOAPMessage sp = isStudySubject_ws.createSOAPRequest();
-                if (isStudySubject_ws.isStudySubjectExist(sp)) {
-                    lSubject.get(j).setSubjectOID(isStudySubject_ws.getStudySubjectOID(sp));
-                } else {
-                    CreateStudySubject_ws createStudySubject = new CreateStudySubject_ws(getTargetStudyPUID(lSourceDataStudy.get(i).getStudyOID()), lSubject.get(j).getSubjectID(), lSubject.get(j).getSubjectGendre(), lSubject.get(j).getSubjectDateOfBirth());
-                    createStudySubject.createSOAPRequest();
-                    IsStudySubject_ws isStudySubject_ws2 = new IsStudySubject_ws(getTargetStudyPUID(lSourceDataStudy.get(i).getStudyOID()), lSubject.get(j).getSubjectID());
-                    SOAPMessage sp2 = isStudySubject_ws2.createSOAPRequest();
-                    lSubject.get(j).setSubjectOID(isStudySubject_ws.getStudySubjectOID(sp2));
-                }
-                List<StudyEvent> lSubjectStudyEvent = lSubject.get(j).getlSubjectstudyEvent();
-                for (int k = 0; k < lSubjectStudyEvent.size(); k++) {
-                    String eventOID = getTargetStudyEventOID(lSubjectStudyEvent.get(k).getEventName(), lSourceDataStudy.get(i).getStudyOID());
-                    ScheduleSubjectEvent_ws scheduleSubjectevent_ws = new ScheduleSubjectEvent_ws(lSubject.get(j).getSubjectID(), getTargetStudyPUID(lSourceDataStudy.get(i).getStudyOID()), eventOID);
-                    scheduleSubjectevent_ws.createSOAPRequest();
-                }
-            }
-        }
-    }*/
+    public void setlSourceDataStudy(List<Study> lSourceDataStudy) {
+        this.lSourceDataStudy = lSourceDataStudy;
+    }
 
-    public void updateClinicalData() {
+    public List<LogStructure> updateClinicalData() {
         for (int i = 0; i < lSourceDataStudy.size(); i++) {
             List<Subject> lSubject = lSourceDataStudy.get(i).getlSubject();
             for (int j = 0; j < lSubject.size(); j++) {
@@ -102,6 +87,7 @@ public class UpdateOIDs {
                 }
             }
         }
+        return lOcWsResponse;
     }
 
     public int getMaxSourceStudyEventRepeatingKey(String studyEventOID, List<StudyEvent> lStudyEvent) {
@@ -243,14 +229,6 @@ public class UpdateOIDs {
             }
         }
         return sTargetStudyEventOID;
-    }
-
-    public List<LogStructure> getlOcWsResponse() {
-        return lOcWsResponse;
-    }
-
-    public void setlOcWsResponse(List<LogStructure> lOcWsResponse) {
-        this.lOcWsResponse = lOcWsResponse;
     }
 
 }

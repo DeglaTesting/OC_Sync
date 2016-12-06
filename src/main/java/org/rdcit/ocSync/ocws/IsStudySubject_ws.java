@@ -19,6 +19,7 @@ import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPHeader;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.soap.SOAPPart;
+import org.rdcit.ocSync.model.LogStructure;
 import org.rdcit.ocSync.model.User;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -32,6 +33,7 @@ public class IsStudySubject_ws {
     String studyPUID;
     String subjectID;
     String sitePUID;
+    LogStructure logStructure;
 
     public IsStudySubject_ws(String studyPUID, String subjectID, String sitePUID) {
         this.studyPUID = studyPUID;
@@ -48,7 +50,7 @@ public class IsStudySubject_ws {
     public SOAPMessage createSOAPRequest() {
         SOAPMessage soapResponse = null;
         try {
-             User user = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
+            User user = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
             MessageFactory messageFactory = MessageFactory.newInstance();
             SOAPMessage soapMessage = messageFactory.createMessage();
             SOAPPart soapPart = soapMessage.getSOAPPart();
@@ -93,6 +95,7 @@ public class IsStudySubject_ws {
             SOAPConnection soapConnection = soapConnectionFactory.createConnection();
 
             soapResponse = soapConnection.call(soapMessage, serverURI);
+            setLogStructure(soapResponse);
             System.out.print("Request SOAP Message = ");
             soapResponse.writeTo(System.out);
             System.out.println();
@@ -110,11 +113,15 @@ public class IsStudySubject_ws {
             String sResult = nResult.getTextContent();
             if (sResult.equals("Success")) {
                 exist = true;
+                this.logStructure = new LogStructure("Success", " The subject: " + this.subjectID + " exists already in the study: " + this.studyPUID);
+            } else {
+                Node nError = soapResponse.getSOAPBody().getElementsByTagName("error").item(0);
+                this.logStructure = new LogStructure("Error", nError.getTextContent());
             }
         } catch (SOAPException ex) {
+             this.logStructure = new LogStructure("Error", "EXCEPTIOJN");
             System.out.println(ex.getMessage());
         }
-          System.out.println("???????????????????????? isStudySubjectExist " + exist);
         return exist;
     }
 
@@ -122,14 +129,32 @@ public class IsStudySubject_ws {
         String subjectOID = "";
         try {
             NodeList nlODM = soapResponse.getSOAPBody().getElementsByTagName("subjectOID");
-            System.out.println("???????????????????????? studyOID nlODM" + nlODM.getLength());
             Node nResult = nlODM.item(0);
-            subjectOID = nResult.getTextContent();   
+            subjectOID = nResult.getTextContent();
         } catch (SOAPException ex) {
             System.out.println(ex.getMessage());
         }
-         System.out.println("???????????????????????? studyOID subjectOID" +subjectOID);
         return subjectOID;
+    }
+
+    public LogStructure getLogStructure() {
+        return logStructure;
+    }
+
+    public void setLogStructure(SOAPMessage soapResponse) {
+        try {
+            NodeList nlODM = soapResponse.getSOAPBody().getElementsByTagName("result");
+            Node nResult = nlODM.item(0);
+            String sResult = nResult.getTextContent();
+            if (sResult.equals("Success")) {
+                this.logStructure = new LogStructure("Success", " The subject: " + this.subjectID + " exists already in the study: " + this.studyPUID);
+            } else {
+                Node nError = soapResponse.getSOAPBody().getElementsByTagName("error").item(0);
+                this.logStructure = new LogStructure("Error", nError.getTextContent());
+            }
+        } catch (SOAPException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     public static void main(String[] args) throws Exception {

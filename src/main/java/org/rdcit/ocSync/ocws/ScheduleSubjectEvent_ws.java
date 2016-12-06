@@ -22,6 +22,7 @@ import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPHeader;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.soap.SOAPPart;
+import org.rdcit.ocSync.model.LogStructure;
 import org.rdcit.ocSync.model.User;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -38,6 +39,7 @@ public class ScheduleSubjectEvent_ws {
     String eventOID;
     String startDate;
     String location;
+    LogStructure logStructure;
 
     public ScheduleSubjectEvent_ws(String subjectID, String studyPUID, String eventOID) {
         this.subjectID = subjectID;
@@ -66,7 +68,7 @@ public class ScheduleSubjectEvent_ws {
     public SOAPMessage createSOAPRequest() {
         SOAPMessage soapResponse = null;
         try {
-             User user = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
+            User user = (User) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user");
             MessageFactory messageFactory = MessageFactory.newInstance();
             SOAPMessage soapMessage = messageFactory.createMessage();
             SOAPPart soapPart = soapMessage.getSOAPPart();
@@ -119,6 +121,7 @@ public class ScheduleSubjectEvent_ws {
             SOAPConnection soapConnection = soapConnectionFactory.createConnection();
 
             soapResponse = soapConnection.call(soapMessage, serverURI);
+            setLogStructure(soapResponse);
             System.out.print("Request SOAP Message = ");
             soapResponse.writeTo(System.out);
         } catch (SOAPException | IOException ex) {
@@ -127,7 +130,7 @@ public class ScheduleSubjectEvent_ws {
         return soapResponse;
     }
 
-    public boolean isScheduled(SOAPMessage soapResponse) {
+    /*   public boolean isScheduled(SOAPMessage soapResponse) {
         boolean scheduled = false;
         try {
             NodeList nlODM = soapResponse.getSOAPBody().getElementsByTagName("result");
@@ -135,14 +138,38 @@ public class ScheduleSubjectEvent_ws {
             String sResult = nResult.getTextContent();
             if (sResult.equals("Success")) {
                 scheduled = true;
+            } else {
+                Node nError = soapResponse.getSOAPBody().getElementsByTagName("error").item(0);
+                this.message = nError.getTextContent();
             }
         } catch (SOAPException ex) {
             System.out.println(ex.getMessage());
         }
         return scheduled;
+    }*/
+    public void setLogStructure(SOAPMessage soapResponse) {
+        try {
+            NodeList nlODM = soapResponse.getSOAPBody().getElementsByTagName("result");
+            Node nResult = nlODM.item(0);
+            String sResult = nResult.getTextContent();
+            if (sResult.equals("Success")) {
+                this.logStructure = new LogStructure("Success", "The " + this.eventOID + " is scheduled succefully in  the study:" + this.studyPUID + " for " + this.subjectID);
+            } else {
+                Node nError = soapResponse.getSOAPBody().getElementsByTagName("error").item(0);
+                this.logStructure = new LogStructure("Error", nError.getTextContent());
+            }
+        } catch (SOAPException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
-    
-   /*  public String getEventOID(SOAPMessage soapResponse) {
+
+    public LogStructure getLogStructure() {
+        return logStructure;
+    }
+
+
+
+    /*  public String getEventOID(SOAPMessage soapResponse) {
         String  eventOID = "";
         try {
             NodeList nlODM = soapResponse.getSOAPBody().getElementsByTagName("result");
@@ -156,7 +183,6 @@ public class ScheduleSubjectEvent_ws {
         }
         return scheduled;
     }*/
-
     public static void main(String[] args) {
         ScheduleSubjectEvent_ws scheduleSubjectevent_ws = new ScheduleSubjectEvent_ws("subjectID", "testingStudy", "SE_FIRSTEVENT_1107");
         scheduleSubjectevent_ws.createSOAPRequest();

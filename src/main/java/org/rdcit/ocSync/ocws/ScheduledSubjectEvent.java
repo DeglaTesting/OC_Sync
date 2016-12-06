@@ -33,7 +33,7 @@ public class ScheduledSubjectEvent {
                     + "AND study_subject.label = '" + this.subjectID + "' AND study_event_definition.oc_oid = '" + this.eventOID + "';");
             ResultSet rs = prepStmt.executeQuery();
             if (rs.next()) {
-                scheduledEventNumber = rs.getString("1");
+                scheduledEventNumber = rs.getString(1);
             }
         } catch (Exception ex) {
             System.out.println(ex.getMessage());

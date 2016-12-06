@@ -15,18 +15,9 @@
                 overflow: hidden !important;
                 border-width: 0 !important
             }
-            .ui-layout-south {  
-                overflow:hidden !important;
-                background-color: #0277BD !important;
-            }
             .ui-layout-north .ui-layout-unit-content {
                 overflow:hidden !important;
             }    
-
-            .ui-layout-south .ui-layout-unit-content {
-                overflow:hidden !important;
-                background-color: #0277BD !important;
-            } 
         </style>
     </h:head>
     <h:body>
@@ -41,8 +32,20 @@
                     </p:menubar>
                 </h:form>
             </p:layoutUnit>
-            <p:layoutUnit position="south" size="100" closable="true" collapsible="true">
-                Footer
+            <p:layoutUnit position="south" size="150" closable="true" collapsible="true">
+                <h:form>
+                    <p:dataTable var="LogStructure" value="#{CompatibleODMXmlFileGenerateur.getlOcWsResponse()}" resizableColumns="true" scrollable="true">
+                        <f:facet name="header">
+                            OC web service logs
+                        </f:facet>
+                        <p:column style=" width: 100px">
+                            <h:outputText value="#{LogStructure.typeMessage}"/>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{LogStructure.message}"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
             </p:layoutUnit>
             <p:layoutUnit position="center">
                 <h:form id="fStudy">      
