@@ -32,7 +32,7 @@ public class ScheduledSubjectEvent {
                     + "INNER JOIN public.study_event_definition ON  study_event.study_event_definition_id =   study_event_definition.study_event_definition_id\n"
                     + "AND study_subject.label = '" + this.subjectID + "' AND study_event_definition.oc_oid = '" + this.eventOID + "';");
             ResultSet rs = prepStmt.executeQuery();
-            if (rs.next()) {
+            if (!(rs.getString(1) == null)) {
                 scheduledEventNumber = rs.getString(1);
             }
         } catch (Exception ex) {

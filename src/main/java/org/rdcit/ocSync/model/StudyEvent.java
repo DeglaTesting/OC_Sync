@@ -67,8 +67,9 @@ public class StudyEvent {
         return eventRepeatingKey;
     }
 
+    @SuppressWarnings("null")
     public void setEventRepeatingKey(String eventRepeatingKey) {
-        if (eventRepeatingKey.length() < 1) {
+       if ((eventRepeatingKey.length() < 1) ||(eventRepeatingKey == null)) {
             this.eventRepeatingKey = "0";
         } else {
             this.eventRepeatingKey = eventRepeatingKey;

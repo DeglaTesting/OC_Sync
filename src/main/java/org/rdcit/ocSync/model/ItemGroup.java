@@ -68,7 +68,7 @@ public class ItemGroup {
     }
 
     public void setItemGroupRepeatingKey(String itemGroupRepeatingKey) {
-        if (itemGroupRepeatingKey.length() < 1) {
+        if ((itemGroupRepeatingKey.length() < 1) ||(itemGroupRepeatingKey == null)) {
             this.itemGroupRepeatingKey = "0";
         } else {
             this.itemGroupRepeatingKey = itemGroupRepeatingKey;

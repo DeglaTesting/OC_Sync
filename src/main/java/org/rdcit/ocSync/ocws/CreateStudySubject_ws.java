@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
 import javax.xml.namespace.QName;
 import javax.xml.soap.MessageFactory;
@@ -116,13 +118,14 @@ public class CreateStudySubject_ws {
             MimeHeaders headers = soapMessage.getMimeHeaders();
             headers.addHeader("SOAPAction", serverURI + "create");
             soapMessage.saveChanges();
-
+            soapMessage.writeTo(System.out);
+            System.out.println();
             SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
             SOAPConnection soapConnection = soapConnectionFactory.createConnection();
             soapResponse = soapConnection.call(soapMessage, serverURI);
             setLogStructure(soapResponse);
             //  soapResponse.writeTo(System.out);
-        } catch (SOAPException ex) {
+        } catch (SOAPException | IOException ex) {
             System.out.println(ex.getMessage());
         }
         return soapResponse;
@@ -132,17 +135,13 @@ public class CreateStudySubject_ws {
         return logStructure;
     }
 
-    public void setLogStructure(LogStructure logStructure) {
-        this.logStructure = logStructure;
-    }
-
     public void setLogStructure(SOAPMessage soapResponse) {
         try {
             NodeList nlODM = soapResponse.getSOAPBody().getElementsByTagName("createResponse");
             Node nResult = nlODM.item(0);
             String sResult = nResult.getTextContent();
             if (sResult.equals("Success")) {
-                this.logStructure = new LogStructure("Success", "The subject '" + this.subjectID + "' is created successfully into '" + this.studyPUID+"'.");
+                this.logStructure = new LogStructure("Success", "The subject '" + this.subjectID + "' is created successfully into '" + this.studyPUID + "'.");
             } else {
                 Node nError = soapResponse.getSOAPBody().getElementsByTagName("error").item(0);
                 this.logStructure = new LogStructure("Error", nError.getTextContent());

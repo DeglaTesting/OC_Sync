@@ -38,13 +38,13 @@ public class UserCredentials {
     public boolean verifyCredentials() {
         try {
             Connect connect = new Connect();
-            PreparedStatement prepStmt = connect.openConnection().prepareStatement("SELECT run_webservices FROM user_account WHERE user_name = '" + this.userName + "' AND passwd = '" + this.password + "';");
+            PreparedStatement prepStmt = connect.openConnection().prepareStatement("SELECT run_webservices, enabled FROM user_account WHERE user_name = '" + this.userName + "' AND passwd = '" + this.password + "';");
             ResultSet rs = prepStmt.executeQuery();
             if (!rs.next()) {
                 this.verifiy = false;
             } else {
                 this.verifiy = true;
-                if (rs.getString("run_webservices").equals("t")) {
+                if ((rs.getString("run_webservices").equals("t")) && (rs.getString("enabled").equals("t"))) {
                     user = new User(this.userName, this.password);
                     FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("user", user);
                 } else {

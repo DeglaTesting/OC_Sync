@@ -116,7 +116,8 @@ public class ScheduleSubjectEvent_ws {
             MimeHeaders headers = soapMessage.getMimeHeaders();
             headers.addHeader("SOAPAction", serverURI + "create");
             soapMessage.saveChanges();
-
+soapMessage.writeTo(System.out);
+            System.out.println();
             SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
             SOAPConnection soapConnection = soapConnectionFactory.createConnection();
 

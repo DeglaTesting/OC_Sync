@@ -31,16 +31,58 @@ public class UpdateOIDs {
 
     public List<Study> updatelSourceDataStudy() {
         updateClinicalData();
+        //updateSitesClinicalData();
         setNamesSourceStudyClinicalData();
         updateStudyOIDs();
         return this.lSourceDataStudy;
     }
 
-    public void updateClinicalData() {
-        for (int i = 0; i < lSourceDataStudy.size(); i++) {
+    public void updateStudyClinicalData() {
+        List<Subject> lSubject = lSourceDataStudy.get(0).getlSubject();
+        for (int j = 0; j < lSubject.size(); j++) {
+            IsStudySubject_ws isStudySubject_ws = new IsStudySubject_ws(getTargetStudyPUID(lSourceDataStudy.get(0).getStudyOID()), lSubject.get(j).getSubjectID());
+            SOAPMessage sp = isStudySubject_ws.createSOAPRequest();
+            if (isStudySubject_ws.isStudySubjectExist(sp)) {
+                lOcWsResponse.add(isStudySubject_ws.getLogStructure());
+                lSubject.get(j).setSubjectOID(isStudySubject_ws.getStudySubjectOID(sp));
+                List<StudyEvent> lSubjectStudyEvent = lSubject.get(j).getlSubjectstudyEvent();
+                for (int k = 0; k < lSubjectStudyEvent.size(); k++) {
+                    int maxSource = getMaxSourceStudyEventRepeatingKey(lSubjectStudyEvent.get(k).getEventOID(), lSubjectStudyEvent);
+                    String sTargetStudyEventOID = getTargetStudyEventOID(lSubjectStudyEvent.get(k).getEventName(), lSourceDataStudy.get(0).getStudyOID());
+                    ScheduledSubjectEvent scheduledSubjectEvent = new ScheduledSubjectEvent(sTargetStudyEventOID, lSubject.get(j).getSubjectID());
+                    int maxTarget = Integer.parseInt(scheduledSubjectEvent.getScheduledSubjectEventNumber());
+                    if (maxTarget < maxSource) {
+                        for (int l = maxSource; l < maxTarget; l++) {
+                            ScheduleSubjectEvent_ws scheduleSubjectevent_ws = new ScheduleSubjectEvent_ws(lSubject.get(j).getSubjectID(), getTargetStudyPUID(lSourceDataStudy.get(0).getStudyOID()), sTargetStudyEventOID);
+                            scheduleSubjectevent_ws.createSOAPRequest();
+                            lOcWsResponse.add(scheduleSubjectevent_ws.getLogStructure());
+                        }
+                    }
+                }
+            } else {
+                CreateStudySubject_ws createStudySubject = new CreateStudySubject_ws(getTargetStudyPUID(lSourceDataStudy.get(0).getStudyOID()), lSubject.get(j).getSubjectID(), lSubject.get(j).getSubjectGendre(), lSubject.get(j).getSubjectDateOfBirth());
+                createStudySubject.createSOAPRequest();
+                lOcWsResponse.add(createStudySubject.getLogStructure());
+                IsStudySubject_ws isStudySubject_ws2 = new IsStudySubject_ws(getTargetStudyPUID(lSourceDataStudy.get(0).getStudyOID()), lSubject.get(j).getSubjectID());
+                SOAPMessage sp2 = isStudySubject_ws2.createSOAPRequest();
+                lSubject.get(j).setSubjectOID(isStudySubject_ws.getStudySubjectOID(sp2));
+                List<StudyEvent> lSubjectStudyEvent = lSubject.get(j).getlSubjectstudyEvent();
+                for (int k = 0; k < lSubjectStudyEvent.size(); k++) {
+                    String eventOID = getTargetStudyEventOID(lSubjectStudyEvent.get(k).getEventName(), lSourceDataStudy.get(0).getStudyOID());
+                    ScheduleSubjectEvent_ws scheduleSubjectevent_ws = new ScheduleSubjectEvent_ws(lSubject.get(j).getSubjectID(), getTargetStudyPUID(lSourceDataStudy.get(0).getStudyOID()), eventOID);
+                    scheduleSubjectevent_ws.createSOAPRequest();
+                    lOcWsResponse.add(scheduleSubjectevent_ws.getLogStructure());
+                }
+            }
+        }
+    }
+
+    public void updateSitesClinicalData() {
+        for (int i = 1; i < lSourceDataStudy.size(); i++) {
             List<Subject> lSubject = lSourceDataStudy.get(i).getlSubject();
             for (int j = 0; j < lSubject.size(); j++) {
-                IsStudySubject_ws isStudySubject_ws = new IsStudySubject_ws(getTargetStudyPUID(lSourceDataStudy.get(i).getStudyOID()), lSubject.get(j).getSubjectID());
+                String targetStudyPUID = getTargetStudyPUID(lSourceDataStudy.get(0).getStudyOID());
+                IsStudySubject_ws isStudySubject_ws = new IsStudySubject_ws(targetStudyPUID, lSubject.get(j).getSubjectID(), getTargetSitePUID(lSourceDataStudy.get(i).getStudyOID(), targetStudyPUID));
                 SOAPMessage sp = isStudySubject_ws.createSOAPRequest();
                 if (isStudySubject_ws.isStudySubjectExist(sp)) {
                     lOcWsResponse.add(isStudySubject_ws.getLogStructure());
@@ -50,32 +92,42 @@ public class UpdateOIDs {
                         int maxSource = getMaxSourceStudyEventRepeatingKey(lSubjectStudyEvent.get(k).getEventOID(), lSubjectStudyEvent);
                         String sTargetStudyEventOID = getTargetStudyEventOID(lSubjectStudyEvent.get(k).getEventName(), lSourceDataStudy.get(i).getStudyOID());
                         ScheduledSubjectEvent scheduledSubjectEvent = new ScheduledSubjectEvent(sTargetStudyEventOID, lSubject.get(j).getSubjectID());
+                         System.out.println("??????????????????????????? scheduledSubjectEvent.getScheduledSubjectEventNumber() " + scheduledSubjectEvent.getScheduledSubjectEventNumber());
+                       // System.out.println("??????????????????????????? maxSource " + maxSource);
                         int maxTarget = Integer.parseInt(scheduledSubjectEvent.getScheduledSubjectEventNumber());
+                        System.out.println("??????????????????????????? maxTarget " + maxTarget);
+                        System.out.println("??????????????????????????? maxSource " + maxSource);
                         if (maxTarget < maxSource) {
                             for (int l = maxSource; l < maxTarget; l++) {
-                                ScheduleSubjectEvent_ws scheduleSubjectevent_ws = new ScheduleSubjectEvent_ws(lSubject.get(j).getSubjectID(), getTargetStudyPUID(lSourceDataStudy.get(i).getStudyOID()), sTargetStudyEventOID);
+                                ScheduleSubjectEvent_ws scheduleSubjectevent_ws = new ScheduleSubjectEvent_ws(lSubject.get(j).getSubjectID(), targetStudyPUID, getTargetSitePUID(lSourceDataStudy.get(i).getStudyOID(), targetStudyPUID), sTargetStudyEventOID);
                                 scheduleSubjectevent_ws.createSOAPRequest();
                                 lOcWsResponse.add(scheduleSubjectevent_ws.getLogStructure());
                             }
                         }
                     }
                 } else {
-                    CreateStudySubject_ws createStudySubject = new CreateStudySubject_ws(getTargetStudyPUID(lSourceDataStudy.get(i).getStudyOID()), lSubject.get(j).getSubjectID(), lSubject.get(j).getSubjectGendre(), lSubject.get(j).getSubjectDateOfBirth());
+                    CreateStudySubject_ws createStudySubject = new CreateStudySubject_ws(targetStudyPUID, getTargetSitePUID(lSourceDataStudy.get(i).getStudyOID(), targetStudyPUID), lSubject.get(j).getSubjectID(), lSubject.get(j).getSubjectGendre(), lSubject.get(j).getSubjectDateOfBirth());
                     createStudySubject.createSOAPRequest();
                     lOcWsResponse.add(createStudySubject.getLogStructure());
-                    IsStudySubject_ws isStudySubject_ws2 = new IsStudySubject_ws(getTargetStudyPUID(lSourceDataStudy.get(i).getStudyOID()), lSubject.get(j).getSubjectID());
+                    // String targetStudyPUID2 = getTargetStudyPUID(lSourceDataStudy.get(0).getStudyOID());
+                    IsStudySubject_ws isStudySubject_ws2 = new IsStudySubject_ws(targetStudyPUID, lSubject.get(j).getSubjectID(), getTargetSitePUID(lSourceDataStudy.get(i).getStudyOID(), targetStudyPUID));
                     SOAPMessage sp2 = isStudySubject_ws2.createSOAPRequest();
                     lSubject.get(j).setSubjectOID(isStudySubject_ws.getStudySubjectOID(sp2));
                     List<StudyEvent> lSubjectStudyEvent = lSubject.get(j).getlSubjectstudyEvent();
                     for (int k = 0; k < lSubjectStudyEvent.size(); k++) {
                         String eventOID = getTargetStudyEventOID(lSubjectStudyEvent.get(k).getEventName(), lSourceDataStudy.get(i).getStudyOID());
-                        ScheduleSubjectEvent_ws scheduleSubjectevent_ws = new ScheduleSubjectEvent_ws(lSubject.get(j).getSubjectID(), getTargetStudyPUID(lSourceDataStudy.get(i).getStudyOID()), eventOID);
+                        ScheduleSubjectEvent_ws scheduleSubjectevent_ws = new ScheduleSubjectEvent_ws(lSubject.get(j).getSubjectID(), targetStudyPUID, getTargetSitePUID(lSourceDataStudy.get(i).getStudyOID(), targetStudyPUID), eventOID);
                         scheduleSubjectevent_ws.createSOAPRequest();
                         lOcWsResponse.add(scheduleSubjectevent_ws.getLogStructure());
                     }
                 }
             }
         }
+    }
+
+    public void updateClinicalData() {
+        updateStudyClinicalData();
+        updateSitesClinicalData();
     }
 
     public int getMaxSourceStudyEventRepeatingKey(String studyEventOID, List<StudyEvent> lStudyEvent) {
@@ -201,6 +253,19 @@ public class UpdateOIDs {
             }
         }
         return sStudyPUID;
+    }
+
+    public String getTargetSitePUID(String sourceStudyOID, String TargetSudyPUID) {
+        String sSitePUID = "";
+        for (int i = 0; i < lOIDMapper.size(); i++) {
+            if (lOIDMapper.get(i).getSourceStudy().getStudyOID().equals(sourceStudyOID)) {
+                sSitePUID = lOIDMapper.get(i).getTargetStudy().getStudyUPID();
+                sSitePUID = sSitePUID.replaceFirst(TargetSudyPUID, "");
+                sSitePUID = sSitePUID.replaceFirst(" - ", "");
+                break;
+            }
+        }
+        return sSitePUID;
     }
 
     public String getTargetStudyEventOID(String sourceStudyEventName, String sourceStudyOID) {

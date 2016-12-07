@@ -5,6 +5,7 @@
  */
 package org.rdcit.ocSync.map;
 
+import org.rdcit.ocSync.utils.ToDocument;
 import java.util.ArrayList;
 import java.util.List;
 import org.rdcit.ocSync.model.Study;

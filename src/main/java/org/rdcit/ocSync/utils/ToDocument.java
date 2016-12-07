@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.rdcit.ocSync.map;
+package org.rdcit.ocSync.utils;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

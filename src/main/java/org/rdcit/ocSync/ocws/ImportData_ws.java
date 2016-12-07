@@ -24,7 +24,7 @@ import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPHeader;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.soap.SOAPPart;
-import org.rdcit.ocSync.map.ToDocument;
+import org.rdcit.ocSync.utils.ToDocument;
 import org.rdcit.ocSync.model.User;
 import org.w3c.dom.Document;
 
