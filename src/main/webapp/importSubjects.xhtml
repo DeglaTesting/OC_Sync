@@ -50,19 +50,33 @@
                         <p:tab title="Confirmation"  disabled="true"/>
                     </p:tabView>
                 </h:form> 
-                <h:form>      
-                    <p:dataTable  style=" width: 60%; margin-left: 30px; margin-top: 50px;"  var="Study" value="#{StudyView.getlStudy()}" scrollable="false"  emptyMessage="there is no clinical data in this study. ">
-                        <p:column headerText="study OID">
+                <h:form>
+                    <p:dataTable style="margin-left: 30px; margin-top: 50px; width: 70%"  var="Study" value="#{StudyView.getlStudy()}" scrollable="false"  emptyMessage="there is no clinical data in this study. ">
+                        <p:column headerText="study OID" style="width:100px">
                             <h:outputText value="#{Study.studyOID}" />
                         </p:column>
-                        <p:column headerText="Subject unique protocol ID">
+                        <p:column>
                             <p:dataTable  style="border: none;" id="dSubject" var="Subject" value="#{Study.getlSubject()}" scrollable="false"  emptyMessage="There no subjects to import in this study. ">
-                                <p:column>
+                                <p:column headerText="Subject unique protocol ID" style="width:200px">
                                     <h:outputText value="#{Subject.subjectID}"  />
+                                </p:column>
+                                <p:column>
+                                    <p:dataTable var="StudyEvent" value="#{Subject.getlSubjectstudyEvent()}">
+                                        <p:column headerText="Study event OID"  style="width:200px">
+                                            <h:outputText value="#{StudyEvent.eventOID}"  />
+                                        </p:column>
+                                        <p:column headerText="Study event repeating key"  style="width:150px">
+                                            <h:outputText value="#{StudyEvent.eventRepeatingKey}"  />
+                                        </p:column>
+                                    </p:dataTable>
                                 </p:column>
                             </p:dataTable>
                         </p:column>
+                        <p:column headerText="Study parameters" style="width:100px">
+                            <h:outputText value="#{Study.aptToUpload}"  />
+                        </p:column>
                     </p:dataTable>
+                    <p:messages style=" margin-left: 30px; margin-top: 30px" autoUpdate="true" showDetail="true" for="studyParams"/>
                 </h:form> 
                 <h:form style="margin-left: 30px; margin-top:60px">
                     <p:commandButton value="Go back" style="margin-right: 30px;"  ajax="false" action="studyMapping.xhtml"/>

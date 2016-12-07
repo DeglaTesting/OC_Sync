@@ -72,7 +72,7 @@ public class StudySubjectView implements Serializable {
                     sourceStudy.setAptToUpload("OK");
                 } else {
                     sourceStudy.setAptToUpload("Not ok");
-                    FacesContext.getCurrentInstance().addMessage("studyParams", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Study parametres configurations", "The two studies do not have the same parametres configuration."));
+                    FacesContext.getCurrentInstance().addMessage("studyParams", new FacesMessage(FacesMessage.SEVERITY_ERROR, "The parametres configurations of '"+lOIDMapper.get(i).getSourceStudy().getStudyName()+"' ", "does not have the same parametres configuration than the target study '"+lOIDMapper.get(i).getTargetStudy().getStudyName()+"'."));
                 }
             }
             break;

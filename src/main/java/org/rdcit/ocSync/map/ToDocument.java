@@ -70,7 +70,7 @@ public class ToDocument {
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
             StreamResult result = new StreamResult(new StringWriter());
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            DOMSource source = new DOMSource((Node)eNode);
+            DOMSource source = new DOMSource((Node) eNode);
             transformer.transform(source, result);
             StringWriter sw = (StringWriter) result.getWriter();
             StringBuffer sb = sw.getBuffer();
@@ -81,30 +81,22 @@ public class ToDocument {
         }
         return sNode;
     }
-    
+
     public String toString(Document doc) {
         StringWriter sw = null;
-    try {
-        sw = new StringWriter();
-        TransformerFactory tf = TransformerFactory.newInstance();
-        Transformer transformer = tf.newTransformer();
-        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
-        transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-        transformer.transform(new DOMSource(doc), new StreamResult(sw));  
-    } catch (IllegalArgumentException | TransformerException ex) {
-        System.out.println(ex.getMessage());
+        try {
+            sw = new StringWriter();
+            TransformerFactory tf = TransformerFactory.newInstance();
+            Transformer transformer = tf.newTransformer();
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+            transformer.transform(new DOMSource(doc), new StreamResult(sw));
+        } catch (IllegalArgumentException | TransformerException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return sw.toString();
     }
-     return sw.toString();
-}
-    
-    public String retrieveXMLFormatter(String input) {
-        StringWriter sw = null;
-   input.replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "");
-     return sw.toString();
-}
-    
-    
 
 }

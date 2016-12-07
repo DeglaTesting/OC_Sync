@@ -5,8 +5,6 @@
  */
 package org.rdcit.ocSync.ocws;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.faces.context.FacesContext;
 import javax.xml.namespace.QName;
 import javax.xml.soap.MessageFactory;
@@ -19,6 +17,7 @@ import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPHeader;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.soap.SOAPPart;
+import org.rdcit.ocSync.map.ToDocument;
 import org.rdcit.ocSync.model.User;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -29,8 +28,6 @@ import org.w3c.dom.NodeList;
  * @author sa841
  */
 public class StudyMetaData_ws {
-
-  
 
     public Document createSOAPRequest(String study_u_p_id) throws Exception {
         String url = "https://openclinica-testing.medschl.cam.ac.uk/OCplay-ws/ws/study/v1/studyWsdl.wsdl";
@@ -77,9 +74,8 @@ public class StudyMetaData_ws {
         NodeList nlODM = soapResponse.getSOAPBody().getElementsByTagName("odm");
         Node nODM = nlODM.item(0);
         NodeList nlMetaData = nODM.getChildNodes();
-        StringToDocument stringToDocument = new StringToDocument(nlMetaData.item(0).getNodeValue());
-
-        return stringToDocument.document;
+        ToDocument toDocument = new ToDocument();
+        return toDocument.stringToDocument(nlMetaData.item(0).getNodeValue());
     }
 
 }
