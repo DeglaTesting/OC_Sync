@@ -18,13 +18,13 @@ import org.primefaces.model.StreamedContent;
  *
  * @author sa841
  */
-@ManagedBean (name = "FileDownloadView")
+@ManagedBean(name = "FileDownloadView")
 public class FileDownloadView {
 
     private StreamedContent file;
 
     public FileDownloadView() {
-      
+
     }
 
     public StreamedContent getFile() {
@@ -32,10 +32,10 @@ public class FileDownloadView {
     }
 
     public StreamedContent prepDownload() {
-         StreamedContent download = null;
+        StreamedContent download = null;
         try {
             download = new DefaultStreamedContent();
-            File file = new File("C:\\Users\\sa841\\Documents\\NetBeansProjects\\OC\\StudyOCSync.xml");
+            File file = new File("C:\\Users\\sa841\\Documents\\NetBeansProjects\\OC\\ocSync.zip");
             InputStream input = new FileInputStream(file);
             ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
             download = new DefaultStreamedContent(input, externalContext.getMimeType(file.getName()), file.getName());

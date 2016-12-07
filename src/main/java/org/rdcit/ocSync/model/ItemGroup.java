@@ -31,7 +31,7 @@ public class ItemGroup {
 
     public ItemGroup(String itemGroupOID, String itemGroupRepeatingKey) {
         this.itemGroupOID = itemGroupOID;
-        this.itemGroupRepeatingKey = itemGroupRepeatingKey;
+        setItemGroupRepeatingKey(itemGroupRepeatingKey);
         lItem = new ArrayList();
     }
 
@@ -68,7 +68,7 @@ public class ItemGroup {
     }
 
     public void setItemGroupRepeatingKey(String itemGroupRepeatingKey) {
-        if ((itemGroupRepeatingKey.length() < 1) ||(itemGroupRepeatingKey == null)) {
+        if (itemGroupRepeatingKey.length() < 1) {
             this.itemGroupRepeatingKey = "0";
         } else {
             this.itemGroupRepeatingKey = itemGroupRepeatingKey;

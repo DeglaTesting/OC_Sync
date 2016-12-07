@@ -19,33 +19,44 @@ import java.util.zip.ZipOutputStream;
  */
 public class ZipFiles {
 
-    public void createAZipFile() {
+    FileOutputStream fos;
+    ZipOutputStream zos;
+
+    public ZipFiles() {
+        fos = null;
         try {
-            FileOutputStream fos = new FileOutputStream("OCSync.zip");
-            ZipOutputStream zos = new ZipOutputStream(fos);
-            String file1Name = "C:\\Users\\sa841\\res.xml";
-            String file2Name = "C:\\Users\\sa841\\res2.xml";
-            addToZipFile(file1Name, zos);
-            addToZipFile(file2Name, zos);
-            zos.close();
-            fos.close();
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
+            fos = new FileOutputStream("C:\\Users\\sa841\\Documents\\NetBeansProjects\\OC\\ocSync.zip");
+            zos = new ZipOutputStream(fos);
+        } catch (FileNotFoundException ex) {
+            System.out.println(ex.getMessage());
         }
     }
 
-    public void addToZipFile(String fileName, ZipOutputStream zos) throws FileNotFoundException, IOException {
-        System.out.println("Writing '" + fileName + "' to zip file");
-        File file = new File(fileName);
-        FileInputStream fis = new FileInputStream(file);
-        ZipEntry zipEntry = new ZipEntry(fileName);
-        zos.putNextEntry(zipEntry);
-        byte[] bytes = new byte[1024];
-        int length;
-        while ((length = fis.read(bytes)) >= 0) {
-            zos.write(bytes, 0, length);
+    public void closingZipParams() {
+        try {
+            zos.closeEntry();
+            zos.close();
+            fos.close();
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
         }
-        zos.closeEntry();
-        fis.close();
+    }
+
+    public void addToZipFile(String fileName) {
+        try {
+            System.out.println("Writing '" + fileName + "' to zip file");
+            File file = new File(fileName);
+            FileInputStream fis = new FileInputStream(file);
+            ZipEntry zipEntry = new ZipEntry(fileName);
+            zos.putNextEntry(zipEntry);
+            byte[] bytes = new byte[1024];
+            int length;
+            while ((length = fis.read(bytes)) >= 0) {
+                zos.write(bytes, 0, length);
+            }
+            fis.close();
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 }

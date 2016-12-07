@@ -6,7 +6,11 @@
 package org.rdcit.ocSync.ocOdm;
 
 import java.io.File;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
@@ -19,6 +23,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.rdcit.ocSync.model.*;
+import org.rdcit.ocSync.utils.ZipFiles;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -30,12 +35,12 @@ import org.w3c.dom.Element;
 public class CompatibleODMXmlFileGenerateur {
 
     public List<Study> lStudy;
-    File file;
-     List<LogStructure> lOcWsResponse;
+    //File file;
+    List<LogStructure> lOcWsResponse;
 
     public CompatibleODMXmlFileGenerateur() {
         lStudy = new ArrayList();
-        file = new File("C:\\Users\\sa841\\Documents\\NetBeansProjects\\OC\\StudyOCSync.xml");
+        //file = new File("C:\\Users\\sa841\\Documents\\NetBeansProjects\\OC\\StudyOCSync.xml");
     }
 
     public String generateOdmXmlFile() {
@@ -43,22 +48,41 @@ public class CompatibleODMXmlFileGenerateur {
         CompatibleODMXmlFileGenerateur compatibleODMXmlFileGenerateur = new CompatibleODMXmlFileGenerateur();
         compatibleODMXmlFileGenerateur.lStudy = updateOIDs.updatelSourceDataStudy();
         lOcWsResponse = updateOIDs.getlOcWsResponse();
-        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@ lOcWsResponse SIZE" + lOcWsResponse.size());
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("lOcWsResponse", lOcWsResponse);
-        compatibleODMXmlFileGenerateur.writeTheOdmXmlFile();
+        compatibleODMXmlFileGenerateur.writetheOdmXmlFiles();
         return "confirmation.xhtml";
     }
 
-    public File getFile() {
+    /*  public File getFile() {
         return file;
     }
 
     public void setFile(File file) {
         this.file = file;
+    }*/
+    public void writetheOdmXmlFiles() {
+        try {
+            ZipFiles zipFile = new ZipFiles();
+            DateFormat dateFormat = new SimpleDateFormat("MMddHHss");
+            Date date = new Date();
+            String cdate = dateFormat.format(date);
+            for (int i = 0; i < this.lStudy.size(); i++) {
+                String studyFilename = lStudy.get(i).getStudyName().replace(" ", "").concat(cdate);
+                File studyFile = new File("C:\\Users\\sa841\\Documents\\NetBeansProjects\\OC\\" + studyFilename + ".xml");
+                if (studyFile.createNewFile()) {
+                    writeTheOdmXmlFile(lStudy.get(i), studyFile);
+                    zipFile.addToZipFile(studyFile.getPath());
+                } else {
+                    System.out.println("Can't create file for the study '" + studyFilename + "'.");
+                }
+            }
+            zipFile.closingZipParams();
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
- 
-    public File writeTheOdmXmlFile() {
-      
+
+    public void writeTheOdmXmlFile(Study study, File studyFile) {
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -75,52 +99,52 @@ public class CompatibleODMXmlFileGenerateur {
             rootElement.setAttribute("xmlns", "http://www.cdisc.org/ns/odm/v1.3");*/
 
             doc.appendChild(rootElement);
-            for (int i = 0; i < this.lStudy.size(); i++) {
-                Element clinicalData = doc.createElement("ClinicalData");
-                clinicalData.setAttribute("StudyOID", lStudy.get(i).getStudyOID());
-                List<Subject> lSubject = lStudy.get(i).getlSubject();
-                for (int h = 0; h < lSubject.size(); h++) {
-                    Element subjectData = doc.createElement("SubjectData");
-                    subjectData.setAttribute("SubjectKey", lSubject.get(h).getSubjectOID());
-                    List<StudyEvent> lSubjectStudyEvent = lSubject.get(h).getlSubjectstudyEvent();
-                    for (int j = 0; j < lSubjectStudyEvent.size(); j++) {
-                        Element studyEventData = doc.createElement("StudyEventData");
-                        studyEventData.setAttribute("StudyEventOID", lSubjectStudyEvent.get(j).getEventOID());
-                        studyEventData.setAttribute("StudyEventRepeatKey", lSubjectStudyEvent.get(j).getEventRepeatingKey());
-                        List<StudyEventForm> lStudyEventForm = lSubjectStudyEvent.get(j).getlStudyEventForm();
-                        for (int k = 0; k < lStudyEventForm.size(); k++) {
-                            Element formData = doc.createElement("FormData");
-                            formData.setAttribute("FormOID", lStudyEventForm.get(k).getFormOID());
-                            List<ItemGroup> lItemGroup = lStudyEventForm.get(k).getlItemGroup();
-                            for (int l = 0; l < lItemGroup.size(); l++) {
-                                Element itemgroupData = doc.createElement("ItemGroupData");
-                                itemgroupData.setAttribute("TransactionType", "Insert");
-                                itemgroupData.setAttribute("ItemGroupOID", lItemGroup.get(l).getItemGroupOID());
-                                itemgroupData.setAttribute("ItemGroupRepeatKey", lItemGroup.get(l).getItemGroupRepeatingKey());
-                                List<Item> lItem = lItemGroup.get(l).getlItem();
-                                for (int m = 0; m < lItem.size(); m++) {
-                                    Element itemData = doc.createElement("ItemData");
-                                    itemData.setAttribute("Value", lItem.get(m).getItemValue());
-                                    itemData.setAttribute("ItemOID", lItem.get(m).getItemOID());
-                                    itemgroupData.appendChild(itemData);
-                                }
-                                formData.appendChild(itemgroupData);
+            // for (int i = 0; i < this.lStudy.size(); i++) {
+            Element clinicalData = doc.createElement("ClinicalData");
+            clinicalData.setAttribute("StudyOID", study.getStudyOID());
+            List<Subject> lSubject = study.getlSubject();
+            for (int h = 0; h < lSubject.size(); h++) {
+                Element subjectData = doc.createElement("SubjectData");
+                subjectData.setAttribute("SubjectKey", lSubject.get(h).getSubjectOID());
+                List<StudyEvent> lSubjectStudyEvent = lSubject.get(h).getlSubjectstudyEvent();
+                for (int j = 0; j < lSubjectStudyEvent.size(); j++) {
+                    Element studyEventData = doc.createElement("StudyEventData");
+                    studyEventData.setAttribute("StudyEventOID", lSubjectStudyEvent.get(j).getEventOID());
+                    studyEventData.setAttribute("StudyEventRepeatKey", lSubjectStudyEvent.get(j).getEventRepeatingKey());
+                    List<StudyEventForm> lStudyEventForm = lSubjectStudyEvent.get(j).getlStudyEventForm();
+                    for (int k = 0; k < lStudyEventForm.size(); k++) {
+                        Element formData = doc.createElement("FormData");
+                        formData.setAttribute("FormOID", lStudyEventForm.get(k).getFormOID());
+                        List<ItemGroup> lItemGroup = lStudyEventForm.get(k).getlItemGroup();
+                        for (int l = 0; l < lItemGroup.size(); l++) {
+                            Element itemgroupData = doc.createElement("ItemGroupData");
+                            itemgroupData.setAttribute("TransactionType", "Insert");
+                            itemgroupData.setAttribute("ItemGroupOID", lItemGroup.get(l).getItemGroupOID());
+                            itemgroupData.setAttribute("ItemGroupRepeatKey", lItemGroup.get(l).getItemGroupRepeatingKey());
+                            List<Item> lItem = lItemGroup.get(l).getlItem();
+                            for (int m = 0; m < lItem.size(); m++) {
+                                Element itemData = doc.createElement("ItemData");
+                                itemData.setAttribute("Value", lItem.get(m).getItemValue());
+                                itemData.setAttribute("ItemOID", lItem.get(m).getItemOID());
+                                itemgroupData.appendChild(itemData);
                             }
-                            studyEventData.appendChild(formData);
+                            formData.appendChild(itemgroupData);
                         }
-                        subjectData.appendChild(studyEventData);
+                        studyEventData.appendChild(formData);
                     }
-                    clinicalData.appendChild(subjectData);
+                    subjectData.appendChild(studyEventData);
                 }
-                rootElement.appendChild(clinicalData);
+                clinicalData.appendChild(subjectData);
             }
-          /* ImportData_ws importData_ws = new ImportData_ws(doc);
+            rootElement.appendChild(clinicalData);
+            // }
+            /* ImportData_ws importData_ws = new ImportData_ws(doc);
            importData_ws.createSOAPRequest();*/
             // write the content into xml file
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(file);
+            StreamResult result = new StreamResult(studyFile);
             transformer.transform(source, result);
             // Output to console for testing
             /* StreamResult consoleResult = new StreamResult(System.out);
@@ -129,7 +153,6 @@ public class CompatibleODMXmlFileGenerateur {
         } catch (ParserConfigurationException | TransformerException ex) {
             System.out.println(ex.getMessage());
         }
-        return file;
     }
 
     public List<LogStructure> getlOcWsResponse() {
@@ -138,5 +161,5 @@ public class CompatibleODMXmlFileGenerateur {
 
     public void setlOcWsResponse(List<LogStructure> lOcWsResponse) {
         this.lOcWsResponse = lOcWsResponse;
-    } 
+    }
 }

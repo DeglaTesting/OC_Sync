@@ -26,7 +26,7 @@ public class StudyEvent {
 
     public StudyEvent(String eventOID, String eventRepeatingKey) {
         this.eventOID = eventOID;
-        this.eventRepeatingKey = eventRepeatingKey;
+        setEventRepeatingKey(eventRepeatingKey);
         lStudyEventForm = new ArrayList();
     }
 
@@ -66,10 +66,9 @@ public class StudyEvent {
     public String getEventRepeatingKey() {
         return eventRepeatingKey;
     }
-
-    @SuppressWarnings("null")
+    
     public void setEventRepeatingKey(String eventRepeatingKey) {
-       if ((eventRepeatingKey.length() < 1) ||(eventRepeatingKey == null)) {
+       if (eventRepeatingKey.length() < 1) {
             this.eventRepeatingKey = "0";
         } else {
             this.eventRepeatingKey = eventRepeatingKey;
