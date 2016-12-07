@@ -32,7 +32,7 @@ public class ImportSubjectView implements Serializable {
         String toPage = "login.xhtml";
         lMissingStructure = (List<MissingStructure>) mapper.mapping()[3];
         if (lMissingStructure.size() < 1) {
-            toPage = "importSubjects.xhtml";
+            toPage = "importSubjects1.xhtml";
         }
         return toPage;
     }

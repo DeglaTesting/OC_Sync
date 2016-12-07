@@ -142,7 +142,7 @@ public class CreateStudySubject_ws {
             Node nResult = nlODM.item(0);
             String sResult = nResult.getTextContent();
             if (sResult.equals("Success")) {
-                this.logStructure = new LogStructure("Success", "The subject: " + this.subjectID + " is created successfully into: " + this.studyPUID);
+                this.logStructure = new LogStructure("Success", "The subject '" + this.subjectID + "' is created successfully into '" + this.studyPUID+"'.");
             } else {
                 Node nError = soapResponse.getSOAPBody().getElementsByTagName("error").item(0);
                 this.logStructure = new LogStructure("Error", nError.getTextContent());

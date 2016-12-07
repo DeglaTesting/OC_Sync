@@ -113,7 +113,7 @@ public class IsStudySubject_ws {
             String sResult = nResult.getTextContent();
             if (sResult.equals("Success")) {
                 exist = true;
-                this.logStructure = new LogStructure("Success", " The subject: " + this.subjectID + " exists already in the study: " + this.studyPUID);
+                this.logStructure = new LogStructure("Success", " The subject '" + this.subjectID + "' exists already in the study ' " + this.studyPUID+"'.");
             } else {
                 Node nError = soapResponse.getSOAPBody().getElementsByTagName("error").item(0);
                 this.logStructure = new LogStructure("Error", nError.getTextContent());

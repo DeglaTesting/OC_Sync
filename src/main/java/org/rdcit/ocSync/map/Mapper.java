@@ -8,11 +8,11 @@ package org.rdcit.ocSync.map;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import org.rdcit.ocSync.controller.UserClick;
 import org.rdcit.ocSync.model.*;
@@ -29,7 +29,6 @@ public class Mapper {
     @ManagedProperty(value = "#{UserClick}")
     UserClick userClick;
     File sourceFile = UploadedFile.sourceUploadedFile;
-    //File sourceFile = new File("C:\\Users\\sa841\\Documents\\source_xml.xml");
     File targetFile = new File("C:\\Users\\sa841\\Documents\\Study1.xml");
     List<Study> lSourceStudy;
     List<Study> lTargetStudy;
@@ -37,8 +36,6 @@ public class Mapper {
     List<Study> lStructure1;
     List<EmptyStructure> lEmptyStructure;
     List<MissingStructure> lMissingStructure;
-    List<ImproperStructure> lImproperMissingStructure;
-    List<ImproperStructure> lImproperEmptyStructure;
     boolean areTheyMatch;
     Object[] resMapping;
     List<OIDMapper> lOIDMapper;
@@ -55,8 +52,6 @@ public class Mapper {
             lStructure = new ArrayList();
             lEmptyStructure = new ArrayList();
             lMissingStructure = new ArrayList();
-            lImproperMissingStructure = new ArrayList();
-            lImproperEmptyStructure = new ArrayList();
             lOIDMapper = new ArrayList();
             lStructure1 = new ArrayList();
             areTheyMatch = false;
@@ -66,23 +61,10 @@ public class Mapper {
         }
     }
 
-    public List<Structure> getlStructure() {
-        return lStructure;
-    }
-
-    public List<EmptyStructure> getlEmptyStructure() {
-        return lEmptyStructure;
-    }
-
-    public List<MissingStructure> getlMissingStructure() {
-        return lMissingStructure;
-    }
 
     public Object[] mapping() {
         preMapping();
         try {
-            System.out.println("@@@@@@@@@@@@@@@@@@@@@@@ " + lSourceStudy.size());
-            System.out.println("@@@@@@@@@@@@@@@@@@@@@@@ " + lTargetStudy.size());
             for (int i = 0; i < lSourceStudy.size(); i++) {
                 for (int j = 0; j < lTargetStudy.size(); j++) {
                     if (lSourceStudy.get(i).getStudyUPID().equals(lTargetStudy.get(j).getStudyUPID())) {
@@ -114,20 +96,15 @@ public class Mapper {
                                                                     } else if (r == lTargetItem.size() - 1) {
                                                                         MissingStructure missingStructure = new MissingStructure(lSourceStudy.get(i).getStudyOID(), lSourceStudyEvent.get(k).getEventName(), lSourceStudyEventFrom.get(m).getFormName(), lSourceItem.get(q).getItemName());
                                                                         lMissingStructure.add(missingStructure);
-                                                                        ImproperStructure improperStructure = new ImproperStructure(lSourceStudy.get(i), lSourceStudyEvent.get(k), lSourceStudyEventFrom.get(m), lSourceItem.get(q));
-                                                                        lImproperMissingStructure.add(improperStructure);
                                                                     }
                                                                 }
                                                             }
-
                                                             if (nItemChecked < lTargetItem.size() - 1) {
                                                                 for (int q = 0; q < lTargetItem.size(); q++) {
                                                                     Structure structure = new Structure(lTargetStudy.get(i).getStudyName(), lTargetStudyEvent.get(k).getEventName(), lTargetStudyEventFrom.get(m).getFormName(), lTargetItem.get(q).getItemName());
                                                                     if (!contains(lStructure, structure)) {
                                                                         EmptyStructure emptyStructure = new EmptyStructure(lTargetStudy.get(i).getStudyOID(), lTargetStudyEvent.get(k).getEventName(), lTargetStudyEventFrom.get(m).getFormName(), lTargetItem.get(q).getItemName());
                                                                         lEmptyStructure.add(emptyStructure);
-                                                                        ImproperStructure improperStructure = new ImproperStructure(lTargetStudy.get(i), lTargetStudyEvent.get(k), lTargetStudyEventFrom.get(m), lTargetItem.get(q));
-                                                                        lImproperEmptyStructure.add(improperStructure);
                                                                     }
                                                                 }
                                                             }
@@ -138,8 +115,6 @@ public class Mapper {
                                             } else if (n == lTargetStudyEventFrom.size() - 1) {
                                                 MissingStructure missingStructure = new MissingStructure(lSourceStudy.get(i).getStudyOID(), lSourceStudyEvent.get(k).getEventName(), lSourceStudyEventFrom.get(m).getFormName());
                                                 lMissingStructure.add(missingStructure);
-                                                ImproperStructure improperStructure = new ImproperStructure(lTargetStudy.get(i), lTargetStudyEvent.get(k), lTargetStudyEventFrom.get(m));
-                                                lImproperMissingStructure.add(improperStructure);
                                             }
                                         }
                                     }
@@ -147,8 +122,6 @@ public class Mapper {
                                 } else if (l == lTargetStudyEvent.size() - 1) {
                                     MissingStructure missingStructure = new MissingStructure(lSourceStudy.get(i).getStudyOID(), lSourceStudyEvent.get(k).getEventName());
                                     lMissingStructure.add(missingStructure);
-                                    ImproperStructure improperStructure = new ImproperStructure(lTargetStudy.get(i), lTargetStudyEvent.get(l));
-                                    lImproperMissingStructure.add(improperStructure);
                                 }
                             }
                         }
@@ -159,18 +132,9 @@ public class Mapper {
                     } else if (j == lTargetStudy.size() - 1) {
                         MissingStructure missingStructure = new MissingStructure(lSourceStudy.get(i).getStudyOID());
                         lMissingStructure.add(missingStructure);
-                        ImproperStructure improperStructure = new ImproperStructure(lTargetStudy.get(j));
-                        lImproperMissingStructure.add(improperStructure);
                     }
                 }
             }
-
-            /* System.out.println("############## Structure ######################");
-        printArray(getlStructure());
-        System.out.println("############## EmptyStructure ######################");
-        printArray(lEmptyStructure);
-        System.out.println("############## MissingStructure ######################");
-        printArray(getlMissingStructure());*/
             userClick.setFormLodder("Map");
             if (lMissingStructure.isEmpty()) {
                 areTheyMatch = true;
@@ -187,12 +151,6 @@ public class Mapper {
             System.out.println(ex.getMessage());
         }
         return resMapping;
-    }
-
-    public void printArray(List al) {
-        for (int i = 0; i < al.size(); i++) {
-            System.out.println(al.get(i).toString());
-        }
     }
 
     public boolean contains(List<Structure> lStructure, Structure structure) {
@@ -223,6 +181,19 @@ public class Mapper {
 
     public void setlOIDMapper(List<OIDMapper> lOIDMapper) {
         this.lOIDMapper = lOIDMapper;
+    }
+    
+    
+    public List<Structure> getlStructure() {
+        return lStructure;
+    }
+
+    public List<EmptyStructure> getlEmptyStructure() {
+        return lEmptyStructure;
+    }
+
+    public List<MissingStructure> getlMissingStructure() {
+        return lMissingStructure;
     }
 
     public static void main(String args[]) {

@@ -71,8 +71,7 @@ public class CollectingSubjectClinicalData {
                                                             Item subjectItem = new Item(eStudyItemData.getAttribute("ItemOID"), eStudyItemData.getAttribute("Value"));
                                                             subjectItemGroup.addItem(subjectItem);
                                                         }
-                                                    }
-                                                    
+                                                    }                                                
                                                 }
                                             }
                                         }

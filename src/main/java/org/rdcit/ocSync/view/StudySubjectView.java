@@ -8,9 +8,11 @@ package org.rdcit.ocSync.view;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import org.rdcit.ocSync.model.OIDMapper;
 import org.rdcit.ocSync.model.Study;
 import org.rdcit.ocSync.model.Subject;
 import org.rdcit.ocSync.ocOdm.CollectingClinicalData;
@@ -25,7 +27,7 @@ public class StudySubjectView implements Serializable {
 
     List<Study> lStudy;
     boolean disableConfirmButton;
-
+   
     public StudySubjectView() {
     }
 
@@ -35,6 +37,7 @@ public class StudySubjectView implements Serializable {
         lStudy = collectingClinicalData.collectingClinicalData();
         boolean disabled = false;
         for (int i = 0; i < lStudy.size(); i++) {
+            setAptToUploadStudyParam(lStudy.get(i));
             if (lStudy.get(i).getlSubject().isEmpty()) {
                 disabled = true;
                 Subject subject = new Subject();
@@ -59,6 +62,22 @@ public class StudySubjectView implements Serializable {
 
     public void setDisableConfirmButton(boolean disableConfirmButton) {
         this.disableConfirmButton = disableConfirmButton;
+    }
+
+    public void setAptToUploadStudyParam(Study sourceStudy) {
+        List<OIDMapper> lOIDMapper =  (List<OIDMapper>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("OIDMapperList");
+        for (int i = 0; i < lOIDMapper.size(); i++) {
+            if (sourceStudy.getStudyOID().equals(lOIDMapper.get(i).getSourceStudy().getStudyOID())) {
+                if ((lOIDMapper.get(i).getSourceStudy().studyParamsEquals(lOIDMapper.get(i).getTargetStudy().getStudyParams()))) {
+                    sourceStudy.setAptToUpload("OK");
+                } else {
+                    sourceStudy.setAptToUpload("Not ok");
+                    FacesContext.getCurrentInstance().addMessage("studyParams", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Study parametres configurations", "The two studies do not have the same parametres configuration."));
+                }
+            }
+            break;
+        }
+
     }
 
     public String getSelectedStudyName() {

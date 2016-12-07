@@ -20,8 +20,6 @@ public class OIDMapper {
         this.targetStudy = targetStudy;
     }
 
-   
-
     public Study getSourceStudy() {
         return sourceStudy;
     }
