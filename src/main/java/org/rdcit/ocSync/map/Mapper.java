@@ -94,7 +94,7 @@ public class Mapper {
                                                                         nItemChecked++;
                                                                         break;
                                                                     } else if (r == lTargetItem.size() - 1) {
-                                                                        MissingStructure missingStructure = new MissingStructure(lSourceStudy.get(i).getStudyOID(), lSourceStudyEvent.get(k).getEventName(), lSourceStudyEventFrom.get(m).getFormName(), lSourceItem.get(q).getItemName());
+                                                                        MissingStructure missingStructure = new MissingStructure(lSourceStudy.get(i).getStudyName(), lSourceStudyEvent.get(k).getEventName(), lSourceStudyEventFrom.get(m).getFormName(), lSourceItem.get(q).getItemName());
                                                                         lMissingStructure.add(missingStructure);
                                                                     }
                                                                 }
@@ -103,7 +103,7 @@ public class Mapper {
                                                                 for (int q = 0; q < lTargetItem.size(); q++) {
                                                                     Structure structure = new Structure(lTargetStudy.get(i).getStudyName(), lTargetStudyEvent.get(k).getEventName(), lTargetStudyEventFrom.get(m).getFormName(), lTargetItem.get(q).getItemName());
                                                                     if (!contains(lStructure, structure)) {
-                                                                        EmptyStructure emptyStructure = new EmptyStructure(lTargetStudy.get(i).getStudyOID(), lTargetStudyEvent.get(k).getEventName(), lTargetStudyEventFrom.get(m).getFormName(), lTargetItem.get(q).getItemName());
+                                                                        EmptyStructure emptyStructure = new EmptyStructure(lTargetStudy.get(i).getStudyName(), lTargetStudyEvent.get(k).getEventName(), lTargetStudyEventFrom.get(m).getFormName(), lTargetItem.get(q).getItemName());
                                                                         lEmptyStructure.add(emptyStructure);
                                                                     }
                                                                 }
@@ -113,14 +113,14 @@ public class Mapper {
                                                     }
                                                 }
                                             } else if (n == lTargetStudyEventFrom.size() - 1) {
-                                                MissingStructure missingStructure = new MissingStructure(lSourceStudy.get(i).getStudyOID(), lSourceStudyEvent.get(k).getEventName(), lSourceStudyEventFrom.get(m).getFormName());
+                                                MissingStructure missingStructure = new MissingStructure(lSourceStudy.get(i).getStudyName(), lSourceStudyEvent.get(k).getEventName(), lSourceStudyEventFrom.get(m).getFormName());
                                                 lMissingStructure.add(missingStructure);
                                             }
                                         }
                                     }
                                     break;
                                 } else if (l == lTargetStudyEvent.size() - 1) {
-                                    MissingStructure missingStructure = new MissingStructure(lSourceStudy.get(i).getStudyOID(), lSourceStudyEvent.get(k).getEventName());
+                                    MissingStructure missingStructure = new MissingStructure(lSourceStudy.get(i).getStudyName(), lSourceStudyEvent.get(k).getEventName());
                                     lMissingStructure.add(missingStructure);
                                 }
                             }
@@ -130,7 +130,7 @@ public class Mapper {
                         lOIDMapper.add(oidMapper);
                         break;
                     } else if (j == lTargetStudy.size() - 1) {
-                        MissingStructure missingStructure = new MissingStructure(lSourceStudy.get(i).getStudyOID());
+                        MissingStructure missingStructure = new MissingStructure(lSourceStudy.get(i).getStudyName());
                         lMissingStructure.add(missingStructure);
                     }
                 }
