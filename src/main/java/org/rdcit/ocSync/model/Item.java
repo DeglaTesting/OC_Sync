@@ -18,10 +18,8 @@ public class Item {
     String itemOID;
     String itemValue;
 
-    public Item() {
-    }
+    public Item() {}
 
-    
     public Item(String itemOID) {
         this.itemOID = itemOID;
     }
@@ -31,8 +29,6 @@ public class Item {
         this.itemValue = itemValue;
     }
 
-    
-    
     public String getItemName() {
         return itemName;
     }
@@ -56,6 +52,5 @@ public class Item {
     public void setItemValue(String itemValue) {
         this.itemValue = itemValue;
     }
-    
-    
+
 }

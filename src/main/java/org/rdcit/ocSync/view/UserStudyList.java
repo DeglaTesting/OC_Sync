@@ -67,7 +67,6 @@ public class UserStudyList implements Serializable {
     public void onRowUnselect(UnselectEvent event) {
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Target study", "You have to choose a target study first");
         FacesContext.getCurrentInstance().addMessage(null, msg);
-        // setDisableFileUploadButton(true);
     }
 
     public boolean isDisableFileUploadButton() {

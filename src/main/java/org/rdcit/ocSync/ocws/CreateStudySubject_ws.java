@@ -152,24 +152,4 @@ public class CreateStudySubject_ws {
 
     }
 
-    /* public boolean isStudySubjectCreated(SOAPMessage soapResponse) {
-        boolean exist = false;
-        try {
-            NodeList nlODM = soapResponse.getSOAPBody().getElementsByTagName("createResponse");
-            Node nResult = nlODM.item(0);
-            System.out.println("***********" + nlODM.getLength());
-            String sResult = nResult.getTextContent();
-            if (sResult.equals("Success")) {
-                exist = true;
-            }
-        } catch (SOAPException ex) {
-            System.out.println(ex.getMessage());
-        }
-        return exist;
-    }*/
-    public static void main(String[] args) throws Exception {
-        CreateStudySubject_ws createStudySubject = new CreateStudySubject_ws("testingStudy", "subjectID7", "m", "2000-12-12");
-        //    System.out.println(createStudySubject.isStudySubjectCreated(createStudySubject.createSOAPRequest()));
-    }
-
 }

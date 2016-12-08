@@ -166,10 +166,4 @@ public class IsStudySubject_ws {
             System.out.println(ex.getMessage());
         }
     }
-
-    /*  public static void main(String[] args) throws Exception {
-        IsStudySubject_ws isStudySubject_ws = new IsStudySubject_ws("testingStudy", "subjectID");
-        isStudySubject_ws.createSOAPRequest();
-        System.out.println("@@@@@@@@@@@@@" + isStudySubject_ws.getStudySubjectOID(isStudySubject_ws.createSOAPRequest()));
-    }*/
 }

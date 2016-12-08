@@ -55,10 +55,4 @@ public class StudyEventForm {
     public void addItemGroup(ItemGroup itemGroup){
         lItemGroup.add(itemGroup);
     }
-
-    @Override
-    public String toString() {
-        return "StudyEventForm{" + "formOID=" + formOID + ", formName=" + formName + '}';
-    }
- 
 }

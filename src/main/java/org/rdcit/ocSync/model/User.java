@@ -52,10 +52,4 @@ public class User implements Serializable{
     public void addStudy(Study study) {
         this.lStudy.add(study);
     }
-
-    @Override
-    public String toString() {
-        return "User{" + "user_name=" + user_name + ", password=" + password +'}';
-    }
-    
 }

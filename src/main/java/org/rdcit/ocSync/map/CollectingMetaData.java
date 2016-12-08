@@ -28,9 +28,7 @@ public class CollectingMetaData {
         this.file = file;
     }
     
-     public CollectingMetaData() {
-       
-    }
+     public CollectingMetaData() {}
     
     public Document openFile() {
         Document doc = null;
@@ -82,8 +80,7 @@ public class CollectingMetaData {
                         CollectingItems collectingItems = new CollectingItems();
                         List<Item> lItem = collectingItems.collectingItems(doc, lItemGroup.get(l));
                     }
-                    System.out.println();
-                }
+                                   }
             }
         }
     }
@@ -101,15 +98,7 @@ public class CollectingMetaData {
                     CollectingItems collectingItems = new CollectingItems();
                     List<Item> lItem = collectingItems.collectingItems(doc, lItemGroup.get(l));
                 }
-                System.out.println();
             }
         }
     }
-
-    public static void main(String[] args) {
-         File inputFile = new File("C:\\Users\\sa841\\Documents\\odmwithmultiplesites.xml");
-        CollectingMetaData collectingMetaData = new CollectingMetaData(inputFile);
-        collectingMetaData.collectingMetaDataFromFile();
-    }
-
 }

@@ -75,9 +75,4 @@ public class ItemGroup {
         }
     }
 
-    @Override
-    public String toString() {
-        return "ItemGroup{" + "itemGroupOID=" + itemGroupOID + ", itemGroupName=" + itemGroupName + '}';
-    }
-
 }

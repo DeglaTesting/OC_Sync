@@ -39,12 +39,10 @@ public class CollectingStudyEvents {
                 Element eStydyEvent = (Element) nStudyEvent;
                 StudyEvent studyEvent = new StudyEvent(eStydyEvent.getAttribute("StudyEventOID"));
                 studyEvent.setEventName(getStuydEventName(eStydyEvent.getAttribute("StudyEventOID")));
-                 System.out.println(studyEvent.toString());
                 lStudyEvent.add(studyEvent);
                  this.study.addStudyEvent(studyEvent);
             }
         }
-       
         return lStudyEvent;
     }
 
@@ -57,7 +55,6 @@ public class CollectingStudyEvents {
                 Element eStydyEvent = (Element) nStudyEvent;
                 StudyEvent studyEvent = new StudyEvent(eStydyEvent.getAttribute("OID"));
                 studyEvent.setEventName(eStydyEvent.getAttribute("Name"));
-                System.out.println(studyEvent.toString());
                 lStudyEvent.add(studyEvent);
                 this.study.addStudyEvent(studyEvent);
             }

@@ -74,10 +74,4 @@ public class StudyEvent {
             this.eventRepeatingKey = eventRepeatingKey;
         }
     }
-
- /*   @Override
-    public String toString() {
-        return "StudyEvent{" + "eventOID=" + eventOID + " eventName=" + eventName + '}';
-    }*/
-
 }

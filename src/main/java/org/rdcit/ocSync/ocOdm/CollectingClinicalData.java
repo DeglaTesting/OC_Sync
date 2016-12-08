@@ -28,9 +28,6 @@ public class CollectingClinicalData {
     List<Study> lStudy;
     File file;
 
-    /* public CollectingClinicalData() {
-        lStudy = new ArrayList();
-    }*/
     public CollectingClinicalData() {
         this.file = UploadedFile.sourceUploadedFile;
         lStudy = new ArrayList();
@@ -39,7 +36,6 @@ public class CollectingClinicalData {
     public Document openFile() {
         Document doc = null;
         try {
-            //   file = new File("C:\\Users\\sa841\\Documents\\odmwithmultiplesites.xml");
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             doc = dBuilder.parse(file);

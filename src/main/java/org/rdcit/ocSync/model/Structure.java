@@ -59,11 +59,6 @@ public class Structure {
         this.itemName = itemName;
     }
 
-    @Override
-    public String toString() {
-        return "Structure{" + "studyName=" + studyName + ", eventName=" + eventName + ", formName=" + formName + ", itemName=" + itemName + '}';
-    }
-
     public boolean equals(Structure structure) {
         boolean res = false;
         if ((this.getStudyName().equals(structure.getStudyName()))

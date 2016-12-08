@@ -80,15 +80,6 @@ public class CompatibleODMXmlFileGenerateur {
             Document doc = dBuilder.newDocument();
 
             Element rootElement = doc.createElement("ODM");
-            /*  rootElement.setAttribute("xsi:schemaLocationxsi:schemaLocation", "http://www.cdisc.org/ns/odm/v1.3 ODM1-3.xsd");
-            rootElement.setAttribute("ODMVersion", "1.3");
-            rootElement.setAttribute("FileType", "Snapshot");
-            rootElement.setAttribute("FileOID", "1D20080412202420");
-            rootElement.setAttribute("Description", "1D20080412202420");
-            rootElement.setAttribute("CreationDateTime", "1D20080412202420");
-            rootElement.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-            rootElement.setAttribute("xmlns", "http://www.cdisc.org/ns/odm/v1.3");*/
-
             doc.appendChild(rootElement);
             Element clinicalData = doc.createElement("ClinicalData");
             clinicalData.setAttribute("StudyOID", study.getStudyOID());

@@ -79,12 +79,6 @@ public class Subject {
         this.lSubjectstudyEvent = lSubjectstudyEvent;
     }
 
-/*    @Override
-    public String toString() {
-        return "Subject{" + "subjectID=" + subjectID + ", subjectUID=" + subjectUID + ", subjectGendre=" + subjectGendre + ", subjectDateOfBirth=" + subjectDateOfBirth + ", lSubjectstudyEvent=" + lSubjectstudyEvent.size() + '}';
-    }
-*/
-
     public String getSubjectOID() {
         return subjectOID;
     }

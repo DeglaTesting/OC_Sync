@@ -94,11 +94,4 @@ public class MissingStructure {
         this.missingFieldType = missingFieldType;
     }
 
-    @Override
-    public String toString() {
-        return "MissingStructure{" + "studyName=" + studyName + ", eventName=" + eventName + ", formName=" + formName + ", itemName=" + itemName + ", missingFieldType=" + missingFieldType + '}';
-    }
-    
-    
-    
 }

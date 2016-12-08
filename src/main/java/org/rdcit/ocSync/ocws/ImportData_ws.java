@@ -41,25 +41,6 @@ public class ImportData_ws {
         this.doc = doc;
     }
 
-  /*  public String fileToString() {
-        String content = "";
-        try {
-            FileReader fr = new FileReader(this.file);
-            BufferedReader br = new BufferedReader(fr);
-            String line;
-            StringBuilder sb = new StringBuilder();
-            while ((line = br.readLine()) != null) {
-                sb.append(line.trim());
-            }
-            content = sb.toString();
-            System.out.println(content);
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        }
-        
-        return content; 
-    }*/
-
     public SOAPMessage createSOAPRequest() {
 
         SOAPMessage soapResponse = null;

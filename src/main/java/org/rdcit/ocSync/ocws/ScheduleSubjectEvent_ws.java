@@ -116,7 +116,7 @@ public class ScheduleSubjectEvent_ws {
             MimeHeaders headers = soapMessage.getMimeHeaders();
             headers.addHeader("SOAPAction", serverURI + "create");
             soapMessage.saveChanges();
-soapMessage.writeTo(System.out);
+            soapMessage.writeTo(System.out);
             System.out.println();
             SOAPConnectionFactory soapConnectionFactory = SOAPConnectionFactory.newInstance();
             SOAPConnection soapConnection = soapConnectionFactory.createConnection();
@@ -131,30 +131,13 @@ soapMessage.writeTo(System.out);
         return soapResponse;
     }
 
-    /*   public boolean isScheduled(SOAPMessage soapResponse) {
-        boolean scheduled = false;
-        try {
-            NodeList nlODM = soapResponse.getSOAPBody().getElementsByTagName("result");
-            Node nResult = nlODM.item(0);
-            String sResult = nResult.getTextContent();
-            if (sResult.equals("Success")) {
-                scheduled = true;
-            } else {
-                Node nError = soapResponse.getSOAPBody().getElementsByTagName("error").item(0);
-                this.message = nError.getTextContent();
-            }
-        } catch (SOAPException ex) {
-            System.out.println(ex.getMessage());
-        }
-        return scheduled;
-    }*/
     public void setLogStructure(SOAPMessage soapResponse) {
         try {
             NodeList nlODM = soapResponse.getSOAPBody().getElementsByTagName("result");
             Node nResult = nlODM.item(0);
             String sResult = nResult.getTextContent();
             if (sResult.equals("Success")) {
-                this.logStructure = new LogStructure("Success", "The '" + this.eventOID + "' is scheduled succefully in  the study '" + this.studyPUID + "' for '" + this.subjectID+"'.");
+                this.logStructure = new LogStructure("Success", "The '" + this.eventOID + "' is scheduled succefully in  the study '" + this.studyPUID + "' for '" + this.subjectID + "'.");
             } else {
                 Node nError = soapResponse.getSOAPBody().getElementsByTagName("error").item(0);
                 this.logStructure = new LogStructure("Error", nError.getTextContent());
@@ -168,22 +151,6 @@ soapMessage.writeTo(System.out);
         return logStructure;
     }
 
-
-
-    /*  public String getEventOID(SOAPMessage soapResponse) {
-        String  eventOID = "";
-        try {
-            NodeList nlODM = soapResponse.getSOAPBody().getElementsByTagName("result");
-            Node nResult = nlODM.item(0);
-            String sResult = nResult.getTextContent();
-            if (sResult.equals("Success")) {
-                scheduled = true;
-            }
-        } catch (SOAPException ex) {
-            System.out.println(ex.getMessage());
-        }
-        return scheduled;
-    }*/
     public static void main(String[] args) {
         ScheduleSubjectEvent_ws scheduleSubjectevent_ws = new ScheduleSubjectEvent_ws("subjectID", "testingStudy", "SE_FIRSTEVENT_1107");
         scheduleSubjectevent_ws.createSOAPRequest();

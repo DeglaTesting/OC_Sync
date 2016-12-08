@@ -96,12 +96,6 @@ public class EmptyStructure {
     public void setEmptyFieldType(String emptyFieldType) {
         this.emptyFieldType = emptyFieldType;
     }
-
-    @Override
-    public String toString() {
-        return "EmptyStructure{" + "studyName=" + studyName + ", eventName=" + eventName + ", formName=" + formName + ", itemName=" + itemName + ", emptyFieldType=" + emptyFieldType + '}';
-    }
-    
-    
+   
     
 }

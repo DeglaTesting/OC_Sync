@@ -126,8 +126,4 @@ public class Study implements Serializable {
         this.aptToUpload = aptToUpload;
     }
 
-    @Override
-    public String toString() {
-        return "Study {" + "study_name=" + studyName + ", study_oid=" + studyOID + ", study_id=" + studyUPID + '}';
-    }
 }

@@ -31,7 +31,6 @@ public class UpdateOIDs {
 
     public List<Study> updatelSourceDataStudy() {
         updateClinicalData();
-        //updateSitesClinicalData();
         setNamesSourceStudyClinicalData();
         updateStudyOIDs();
         return this.lSourceDataStudy;
@@ -92,11 +91,7 @@ public class UpdateOIDs {
                         int maxSource = getMaxSourceStudyEventRepeatingKey(lSubjectStudyEvent.get(k).getEventOID(), lSubjectStudyEvent);
                         String sTargetStudyEventOID = getTargetStudyEventOID(lSubjectStudyEvent.get(k).getEventName(), lSourceDataStudy.get(i).getStudyOID());
                         ScheduledSubjectEvent scheduledSubjectEvent = new ScheduledSubjectEvent(sTargetStudyEventOID, lSubject.get(j).getSubjectID());
-                         System.out.println("??????????????????????????? scheduledSubjectEvent.getScheduledSubjectEventNumber() " + scheduledSubjectEvent.getScheduledSubjectEventNumber());
-                       // System.out.println("??????????????????????????? maxSource " + maxSource);
                         int maxTarget = Integer.parseInt(scheduledSubjectEvent.getScheduledSubjectEventNumber());
-                        System.out.println("??????????????????????????? maxTarget " + maxTarget);
-                        System.out.println("??????????????????????????? maxSource " + maxSource);
                         if (maxTarget < maxSource) {
                             for (int l = maxSource; l < maxTarget; l++) {
                                 ScheduleSubjectEvent_ws scheduleSubjectevent_ws = new ScheduleSubjectEvent_ws(lSubject.get(j).getSubjectID(), targetStudyPUID, getTargetSitePUID(lSourceDataStudy.get(i).getStudyOID(), targetStudyPUID), sTargetStudyEventOID);
@@ -109,7 +104,6 @@ public class UpdateOIDs {
                     CreateStudySubject_ws createStudySubject = new CreateStudySubject_ws(targetStudyPUID, getTargetSitePUID(lSourceDataStudy.get(i).getStudyOID(), targetStudyPUID), lSubject.get(j).getSubjectID(), lSubject.get(j).getSubjectGendre(), lSubject.get(j).getSubjectDateOfBirth());
                     createStudySubject.createSOAPRequest();
                     lOcWsResponse.add(createStudySubject.getLogStructure());
-                    // String targetStudyPUID2 = getTargetStudyPUID(lSourceDataStudy.get(0).getStudyOID());
                     IsStudySubject_ws isStudySubject_ws2 = new IsStudySubject_ws(targetStudyPUID, lSubject.get(j).getSubjectID(), getTargetSitePUID(lSourceDataStudy.get(i).getStudyOID(), targetStudyPUID));
                     SOAPMessage sp2 = isStudySubject_ws2.createSOAPRequest();
                     lSubject.get(j).setSubjectOID(isStudySubject_ws.getStudySubjectOID(sp2));
