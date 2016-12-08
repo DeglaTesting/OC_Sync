@@ -146,7 +146,7 @@ public class Mapper {
             resMapping[4] = lStructure1;
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("OIDMapperList", lOIDMapper);
         } catch (Exception ex) {
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Format Error", "Sorry, but the uploded file is not well formatted.");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Format Error", "Sorry, but the uploded file is not well formatted.");
             FacesContext.getCurrentInstance().addMessage("formatErrorMSG", message);
             System.out.println(ex.getMessage());
         }
