@@ -98,11 +98,24 @@ public class Study implements Serializable {
         this.studyParams = studyParams;
     }
 
-    
     public boolean studyParamsEquals(String[] studyParams) {
-        return this.studyParams[0].equals(studyParams[0])
-                && (this.studyParams[1].equals(studyParams[1]))
-                && (this.studyParams[2].equals(studyParams[2]));
+        boolean equals = true;
+        if (!this.studyParams[0].equals(studyParams[0])) {
+            if (Integer.parseInt(this.studyParams[0]) > Integer.parseInt(studyParams[0])) {
+                equals = false;
+            }
+        }
+        if (!this.studyParams[1].equals(studyParams[1])) {
+            if ((studyParams[1].equals("Required")) && (!this.studyParams[1].equals("Required"))) {
+                equals = false;
+            }
+        }
+        if (!this.studyParams[2].equals(studyParams[2])) {
+            if ((studyParams[2].equals("Yes")) && (!studyParams[2].equals("Yes"))) {
+                equals = false;
+            }
+        }
+        return equals;
     }
 
     public String getAptToUpload() {
@@ -112,8 +125,6 @@ public class Study implements Serializable {
     public void setAptToUpload(String aptToUpload) {
         this.aptToUpload = aptToUpload;
     }
-    
-    
 
     @Override
     public String toString() {

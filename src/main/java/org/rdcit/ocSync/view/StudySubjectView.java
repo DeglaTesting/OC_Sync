@@ -27,15 +27,15 @@ public class StudySubjectView implements Serializable {
 
     List<Study> lStudy;
     boolean disableConfirmButton;
-   
+     boolean disabled = false;
+
     public StudySubjectView() {
     }
 
     @PostConstruct
     public void init() {
         CollectingClinicalData collectingClinicalData = new CollectingClinicalData();
-        lStudy = collectingClinicalData.collectingClinicalData();
-        boolean disabled = false;
+        lStudy = collectingClinicalData.collectingClinicalData();  
         for (int i = 0; i < lStudy.size(); i++) {
             setAptToUploadStudyParam(lStudy.get(i));
             if (lStudy.get(i).getlSubject().isEmpty()) {
@@ -65,19 +65,19 @@ public class StudySubjectView implements Serializable {
     }
 
     public void setAptToUploadStudyParam(Study sourceStudy) {
-        List<OIDMapper> lOIDMapper =  (List<OIDMapper>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("OIDMapperList");
+        List<OIDMapper> lOIDMapper = (List<OIDMapper>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("OIDMapperList");
         for (int i = 0; i < lOIDMapper.size(); i++) {
             if (sourceStudy.getStudyOID().equals(lOIDMapper.get(i).getSourceStudy().getStudyOID())) {
                 if ((lOIDMapper.get(i).getSourceStudy().studyParamsEquals(lOIDMapper.get(i).getTargetStudy().getStudyParams()))) {
                     sourceStudy.setAptToUpload("OK");
-                } else {
+                   } else {
                     sourceStudy.setAptToUpload("Not ok");
-                    FacesContext.getCurrentInstance().addMessage("studyParams", new FacesMessage(FacesMessage.SEVERITY_ERROR, "The parametres configurations of '"+lOIDMapper.get(i).getSourceStudy().getStudyName()+"' ", "does not have the same parametres configuration than the target study '"+lOIDMapper.get(i).getTargetStudy().getStudyName()+"'."));
+                    FacesContext.getCurrentInstance().addMessage("studyParams", new FacesMessage(FacesMessage.SEVERITY_ERROR,"Study Parameter configuration :","The two studies does not have the same parametres configuration.")); 
+                    disabled = true;
                 }
             }
             break;
         }
-
     }
 
     public String getSelectedStudyName() {

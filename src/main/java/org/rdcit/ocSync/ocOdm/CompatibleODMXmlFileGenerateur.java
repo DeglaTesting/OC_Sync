@@ -35,13 +35,11 @@ import org.w3c.dom.Element;
 public class CompatibleODMXmlFileGenerateur {
 
     public List<Study> lStudy;
-    //File file;
-    List<LogStructure> lOcWsResponse;
+       List<LogStructure> lOcWsResponse;
 
     public CompatibleODMXmlFileGenerateur() {
         lStudy = new ArrayList();
-        //file = new File("C:\\Users\\sa841\\Documents\\NetBeansProjects\\OC\\StudyOCSync.xml");
-    }
+           }
 
     public String generateOdmXmlFile() {
         UpdateOIDs updateOIDs = new UpdateOIDs();
@@ -53,22 +51,15 @@ public class CompatibleODMXmlFileGenerateur {
         return "confirmation.xhtml";
     }
 
-    /*  public File getFile() {
-        return file;
-    }
-
-    public void setFile(File file) {
-        this.file = file;
-    }*/
     public void writetheOdmXmlFiles() {
         try {
             ZipFiles zipFile = new ZipFiles();
-            DateFormat dateFormat = new SimpleDateFormat("MMddHHss");
+            DateFormat dateFormat = new SimpleDateFormat("ddss");
             Date date = new Date();
             String cdate = dateFormat.format(date);
             for (int i = 0; i < this.lStudy.size(); i++) {
-                String studyFilename = lStudy.get(i).getStudyName().replace(" ", "").concat(cdate);
-                File studyFile = new File("C:\\Users\\sa841\\Documents\\NetBeansProjects\\OC\\" + studyFilename + ".xml");
+                String studyFilename = lStudy.get(i).getStudyName().replace(" ", "").concat("_"+cdate);
+                File studyFile = new File(studyFilename + ".xml");
                 if (studyFile.createNewFile()) {
                     writeTheOdmXmlFile(lStudy.get(i), studyFile);
                     zipFile.addToZipFile(studyFile.getPath());
@@ -99,7 +90,6 @@ public class CompatibleODMXmlFileGenerateur {
             rootElement.setAttribute("xmlns", "http://www.cdisc.org/ns/odm/v1.3");*/
 
             doc.appendChild(rootElement);
-            // for (int i = 0; i < this.lStudy.size(); i++) {
             Element clinicalData = doc.createElement("ClinicalData");
             clinicalData.setAttribute("StudyOID", study.getStudyOID());
             List<Subject> lSubject = study.getlSubject();
@@ -137,7 +127,6 @@ public class CompatibleODMXmlFileGenerateur {
                 clinicalData.appendChild(subjectData);
             }
             rootElement.appendChild(clinicalData);
-            // }
             /* ImportData_ws importData_ws = new ImportData_ws(doc);
            importData_ws.createSOAPRequest();*/
             // write the content into xml file
