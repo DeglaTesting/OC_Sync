@@ -29,7 +29,7 @@ public class Mapper {
     @ManagedProperty(value = "#{UserClick}")
     UserClick userClick;
     File sourceFile = UploadedFile.sourceUploadedFile;
-    File targetFile = new File("C:\\Users\\sa841\\Documents\\Study1.xml");
+    //File targetFile = new File("C:\\Users\\sa841\\Documents\\Study1.xml");
     List<Study> lSourceStudy;
     List<Study> lTargetStudy;
     List<Structure> lStructure;
@@ -60,7 +60,6 @@ public class Mapper {
             System.out.println(ex.getMessage());
         }
     }
-
 
     public Object[] mapping() {
         preMapping();
@@ -99,7 +98,7 @@ public class Mapper {
                                                                     }
                                                                 }
                                                             }
-                                                            if (nItemChecked < lTargetItem.size() - 1) {
+                                                            if (nItemChecked < lTargetItem.size()) {
                                                                 for (int q = 0; q < lTargetItem.size(); q++) {
                                                                     Structure structure = new Structure(lTargetStudy.get(i).getStudyName(), lTargetStudyEvent.get(k).getEventName(), lTargetStudyEventFrom.get(m).getFormName(), lTargetItem.get(q).getItemName());
                                                                     if (!contains(lStructure, structure)) {
@@ -182,8 +181,7 @@ public class Mapper {
     public void setlOIDMapper(List<OIDMapper> lOIDMapper) {
         this.lOIDMapper = lOIDMapper;
     }
-    
-    
+
     public List<Structure> getlStructure() {
         return lStructure;
     }

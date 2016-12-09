@@ -66,6 +66,11 @@ public class Subject {
         this.subjectDateOfBirth = subjectDateOfBirth;
     }
 
+    public void updateSubjectDateofBirth(String completeDateOFBirth){
+    String[] arYearOnlyDoB = new String[3];
+        arYearOnlyDoB = this.subjectDateOfBirth.split("-");
+        this.subjectDateOfBirth = arYearOnlyDoB[0];
+    }
 
     public void addSubjectStudyEvent(StudyEvent studyEvent) {
         this.lSubjectstudyEvent.add(studyEvent);

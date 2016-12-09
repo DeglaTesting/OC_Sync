@@ -30,10 +30,29 @@ public class UpdateOIDs {
     }
 
     public List<Study> updatelSourceDataStudy() {
+        updateSPLCollectDob();
         updateClinicalData();
         setNamesSourceStudyClinicalData();
         updateStudyOIDs();
         return this.lSourceDataStudy;
+    }
+
+    public void updateSPLCollectDob() {
+        boolean needToUpdateDob = false;
+        for (int i = 0; i < lOIDMapper.size(); i++) {
+            if ((lOIDMapper.get(i).getSourceStudy().getStudyParams()[0].equals("1")) && (lOIDMapper.get(i).getTargetStudy().getStudyParams()[0].equals("2"))) {
+                needToUpdateDob = true;
+                break;
+            }
+        }
+        if (needToUpdateDob == true) {
+            for (int i = 0; i < lSourceDataStudy.size(); i++) {
+                List<Subject> lSubject = lSourceDataStudy.get(i).getlSubject();
+                for (int j = 0; j < lSubject.size(); j++) {
+                    lSubject.get(j).updateSubjectDateofBirth(lSubject.get(j).getSubjectDateOfBirth());
+                }
+            }
+        }
     }
 
     public void updateStudyClinicalData() {
@@ -236,6 +255,15 @@ public class UpdateOIDs {
                 }
             }
         }
+    }
+
+    public Study getSubjectSourceStudy(Study sOIDMapper) {
+        for (int i = 0; i < lSourceDataStudy.size(); i++) {
+            if (sOIDMapper.getStudyOID().equals(lSourceDataStudy.get(i).getStudyOID())) {
+                return lSourceDataStudy.get(i);
+            }
+        }
+        return null;
     }
 
     public String getTargetStudyPUID(String sourceStudyOID) {
