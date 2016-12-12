@@ -35,7 +35,7 @@ public class FileDownloadView {
         StreamedContent download = null;
         try {
             download = new DefaultStreamedContent();
-            File file = new File("C:\\Users\\sa841\\Documents\\NetBeansProjects\\OC\\ocSync.zip");
+            File file = new File(System.getProperty("user.dir")+"ocSync.zip");
             InputStream input = new FileInputStream(file);
             ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
             download = new DefaultStreamedContent(input, externalContext.getMimeType(file.getName()), file.getName());

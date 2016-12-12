@@ -25,7 +25,7 @@ public class ZipFiles {
     public ZipFiles() {
         fos = null;
         try {
-            fos = new FileOutputStream("C:\\Users\\sa841\\Documents\\NetBeansProjects\\OC\\ocSync.zip");
+            fos = new FileOutputStream(System.getProperty("user.dir")+"ocSync.zip");
             zos = new ZipOutputStream(fos);
         } catch (FileNotFoundException ex) {
             System.out.println(ex.getMessage());
