@@ -17,17 +17,17 @@ import org.rdcit.ocSync.model.Structure;
  *
  * @author sa841
  */
-@ManagedBean (name = "StructureView")
+@ManagedBean(name = "StructureView")
 public class StructureView implements Serializable {
-    
+
     List<Structure> lStructure;
-    @ManagedProperty (value = "#{Mapper}")
+    @ManagedProperty(value = "#{Mapper}")
     Mapper mapper;
-    
+
     @PostConstruct
-   public void init(){
-       lStructure = (List<Structure>) mapper.mapping()[1];  
-   }
+    public void init() {
+        lStructure = (List<Structure>) mapper.mapping()[1];
+    }
 
     public List<Structure> getlStructure() {
         return lStructure;

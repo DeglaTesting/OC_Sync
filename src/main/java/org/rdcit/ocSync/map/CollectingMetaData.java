@@ -21,15 +21,16 @@ import org.xml.sax.SAXException;
  * @author sa841
  */
 public class CollectingMetaData {
-    
+
     File file;
 
     public CollectingMetaData(File file) {
         this.file = file;
     }
-    
-     public CollectingMetaData() {}
-    
+
+    public CollectingMetaData() {
+    }
+
     public Document openFile() {
         Document doc = null;
         try {
@@ -54,8 +55,8 @@ public class CollectingMetaData {
         }
         return lStudy;
     }
-    
-     public List<Study> collectingMetaDataFromDoc(Document doc) {
+
+    public List<Study> collectingMetaDataFromDoc(Document doc) {
         CollectingStudies CollectingStudies = new CollectingStudies();
         List<Study> lStudy = CollectingStudies.collectingStudies(doc);
         if (lStudy.size() > 1) {
@@ -80,7 +81,7 @@ public class CollectingMetaData {
                         CollectingItems collectingItems = new CollectingItems();
                         List<Item> lItem = collectingItems.collectingItems(doc, lItemGroup.get(l));
                     }
-                                   }
+                }
             }
         }
     }

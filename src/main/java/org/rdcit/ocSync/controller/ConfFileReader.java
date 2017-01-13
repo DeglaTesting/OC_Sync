@@ -18,10 +18,12 @@ import javax.faces.context.FacesContext;
 @ManagedBean(name = "ConfFileReader")
 public class ConfFileReader {
 
-    private final String confFile = "C:\\Users\\sa841\\Documents\\NetBeansProjects\\OC\\connect.conf";
+    private final String confFile = ConfFileReader.class.getProtectionDomain().getCodeSource().getLocation().getPath().replace("ConfFileReader.class", "connect.conf");
+    
     String ocInstance;
     String sOcInstanceDBconf;
     String[] ocInstanceDBconf;
+
     String host;
     String port;
     String db_name;
@@ -82,6 +84,10 @@ public class ConfFileReader {
 
     public String getOcInstance() {
         return ocInstance;
+    }
+    
+    public String[] getOcInstanceDBconf() {
+        return ocInstanceDBconf;
     }
 
 }

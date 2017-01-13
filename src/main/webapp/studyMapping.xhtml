@@ -34,7 +34,7 @@
         <p:layout fullPage="true">
             <p:layoutUnit position="north" size="70"> 
                 <h:form>
-                    <p:menubar>
+                    <p:menubar id="loggedIn">
                         <p:submenu label="Welcome #{Logged.userName}"/>
                         <f:facet name="options">
                             <p:commandButton type="submit" value="Logout" icon="ui-icon-extlink" action="#{UserLogin.logout()}"/>
@@ -45,9 +45,9 @@
             <p:layoutUnit position="south" size="100" closable="true" collapsible="true"/>
             <p:layoutUnit position="center">
                 <p:tabView activeIndex="0" style="border:none" >
-                    <p:tab title="Study mapping"/>
-                    <p:tab title="Import Subjects"  disabled="true" />
-                    <p:tab title="Confirmation"  disabled="true"/>
+                    <p:tab id="studyMappingTab" title="Study mapping"/>
+                    <p:tab id="importSubjectTab" title="Import Subjects"  disabled="true" />
+                    <p:tab id="confirmationTab" title="Confirmation"  disabled="true"/>
                 </p:tabView>
 
                 <h:form enctype="multipart/form-data">
@@ -61,7 +61,7 @@
                 <h:form id="from2">
                     <p:commandButton type="submit"  style=" margin: 40px" value="Reset" icon="ui-icon-arrowrefresh-1-w" update="@widgetVar(fileupload) @widgetVar(studyDataTable)" 
                                      actionListener="#{FileUpload.setDisableMapButton(true)}" action="#{UserClick.setFormLodder('Reset')}" ajax="false"/> 
-                    <p:commandButton type="submit" style=" margin: 20px" value="Map" icon="ui-icon-circle-triangle-e" disabled="#{FileUpload.disableMapButton}"
+                    <p:commandButton id="submit" type="submit" style=" margin: 20px" value="Map" icon="ui-icon-circle-triangle-e" disabled="#{FileUpload.disableMapButton}"
                                      actionListener="#{Mapper.mapping()}" ajax="false" widgetVar="map" update="ui" /> 
                 </h:form>
                 <ui:include src="#{UserClick.getFormLodder()}" id="ui" /> 
@@ -69,7 +69,7 @@
             <p:layoutUnit position="west" size="175">   
                 <h:form>
                     <p:growl id="msgs" showDetail="true"   autoUpdate="true" for="SelectStudyMSG"/>         
-                    <p:dataTable widgetVar="studyDataTable" var="Study" value="#{UserStudyList.getlStudy()}" selection="#{UserStudyList.selectedStudy}"
+                    <p:dataTable id="userStudies" widgetVar="studyDataTable" var="Study" value="#{UserStudyList.getlStudy()}" selection="#{UserStudyList.selectedStudy}"
                                  disabledSelection="#{FileUpload.disableSelectStudyButton}" selectionMode="single" rowKey="#{Study.studyName}">
                         <f:facet name="header">
                             Select Study

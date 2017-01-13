@@ -53,7 +53,7 @@
                         </h:panelGrid>
                         <h:panelGrid columns="2" style="margin-top:50px;">
                             <h:outputText value="Please choose an OC instance :"/>  
-                            <p:selectOneMenu value="#{OcInstance.instance}" valueChangeListener="#{OcInstance.valueChangeMethod}" onchange="submit()" >
+                            <p:selectOneMenu id="ocInstance" value="#{OcInstance.instance}" valueChangeListener="#{OcInstance.valueChangeMethod}" onchange="submit()" >
                                 <f:selectItem itemLabel="Choose One" itemValue=""  />
                                 <f:selectItem itemLabel="OC_Play" itemValue="OC_Play" />
                                 <f:selectItem itemLabel="OC_Design" itemValue="OC_Design" />
@@ -62,7 +62,7 @@
                         </h:panelGrid>
                         <h:panelGrid columns="2" style="margin-top:20px">
                             <h:outputText style="margin-right:255px"/>  
-                            <p:commandButton value="Login" update="growl" type="submit" actionListener="#{UserLogin.login}" ajax="false"/>
+                            <p:commandButton id="login" value="Login" update="growl" type="submit" actionListener="#{UserLogin.login}" ajax="false"/>
                         </h:panelGrid>
                     </p:panel>
                 </h:form>
