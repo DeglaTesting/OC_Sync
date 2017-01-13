@@ -37,11 +37,13 @@ import org.xml.sax.SAXException;
 @RunWith(MockitoJUnitRunner.class)
 public class CollectingStudiesTest {
 
- @Mock Node nStudy;
-    @Mock ToDocument toDocument;
+    @Mock
+    Node nStudy;
+    @Mock
+    ToDocument toDocument;
     static Document document;
     CollectingStudies collectingStudies = new CollectingStudies();
- @Ignore
+    
     @BeforeClass
     public static void initTestDependencies() throws ParserConfigurationException, SAXException, IOException {
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -49,7 +51,7 @@ public class CollectingStudiesTest {
         File file = new File("C:\\Users\\sa841\\Documents\\NetBeansProjects\\OC\\src\\test\\Study1.xml");
         document = dBuilder.parse(file);
     }
-  @Ignore
+
     @Test
     public void getStudyNameTest() {
         // given
@@ -66,7 +68,7 @@ public class CollectingStudiesTest {
         // then
         assertTrue(studyName.equals("Study 1"));
     }
- @Ignore
+
     @Test
     public void getStudyProtocolName() {
         // given
@@ -83,7 +85,7 @@ public class CollectingStudiesTest {
         // then
         assertTrue(ProtocolName.equals("Study1"));
     }
- @Ignore
+
     @Test
     public void getStudyParamsTest() {
         // given
@@ -112,7 +114,7 @@ public class CollectingStudiesTest {
         assertTrue(studyParams[1].equals("required"));
         assertTrue(studyParams[2].equals("true"));
     }
- @Ignore
+
     @Test
     public void collectingStudiesTest() {
         List<Study> lStudy = collectingStudies.collectingStudies(document);
